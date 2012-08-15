@@ -1,0 +1,55 @@
+<!-- basic tabbable structure -->
+
+
+<div class="page-header">
+<h2>{{{title}}}</h2>
+{{#small_title}}
+  <small>{{{small_title}}}</small>
+{{/small_title}}  
+</div>
+
+<div id="instructions"></div>
+{{{instructs}}}
+
+{{^pills}}
+<ul class="nav nav-tabs">
+{{/pills}}
+{{#pills}}
+<ul class="nav nav-pills">
+{{/pills}}
+  
+{{#tabs}}
+  <li{{#active}} class="active"{{/active}}><a href="#{{tab_id}}_tab" data-toggle="tab">{{label}}</a></li>
+{{/tabs}}
+</ul>
+
+<div class="tab-content">
+{{#tabs}}
+  <div
+    class="tab-pane{{#active}} active{{/active}}"
+    {{#tab_id}}id="{{tab_id}}_tab"{{/tab_id}}>
+    
+   {{{tab_content}}}
+
+  </div>
+{{/tabs}}
+</div>
+
+{{#script}}
+<script>
+{{{script}}}
+</script>
+{{/script}}
+
+{{{js_files}}}
+
+
+<script src="{{{bootstrap_base_url}}}/assets/js/bootstrap-tab.js"></script>
+<script>
+$(document).ready(function() {
+  $('.nav a').click(function (e) {
+    e.preventDefault();
+    $(this).tab('show');
+  })
+})
+</script>

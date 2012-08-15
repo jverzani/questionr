@@ -1,0 +1,115 @@
+``` {r echo=FALSE, results="asis"}
+## process with knitr:::knit2html("filename.Rmd")
+## Nothing to see here ... move along
+require("questionr", quietly=TRUE)
+page <- questionr:::Page$new()
+nav <- questionr:::NavBar$new()
+cat(page$write_header())
+```
+`r I(nav$write_header("Using the questionr package", "Basic explanations"))`
+
+`r I(nav$add("About"))`
+
+The `questionr` package has two purposes:
+
+* to make a simple to use template to make self-contained quizzes to put on the web
+
+* to create a basic web content management system to allow teachers and students to form sections of classes.
+
+The writing of quizzes, called "projects" below is discussed elsewhere. For the rest of this document we will discuss the basic web framework presented for holding a section.
+
+
+
+`r I(nav$add("Logging on"))`
+
+
+One goal of the project was to avoid having to deal with different
+user logins and passwords. Students already have too many. The concept
+of `openID` allows multiple websites to share login credentials. This
+package uses `janrain.com` to provide a service that allows users to
+login with several different account identities include `google` and
+`yahoo` accounts. It is possible to link up with FaceBook accounts, but this hasn't been done.
+
+Users should close the browser when finished if they wish to logout or
+use the logout feature.
+
+When a user first logs in, they are enrolled as a student in the
+system. By default, a student is not part of any sections. They need to
+enroll. A student has the option of enrolling in a public section or a
+private one, if they know the section ID. The basic idea is a student
+will be given a section ID by an instructor and they will then enroll.
+
+A teacher must be given additional roles within the system. To make a request to be a teacher, requires someone to 
+
+* open an account as a student go to the page at
+ 
+*  `request_teacher_status` and make a request. This is not a link
+   available to the student and must be typed in. A system
+   adminstrator must authorize this new role.
+
+
+`r I(nav$add("The student view"))`
+
+Students have very limited options:
+
+* They can enroll in a section if they know the id 
+
+* They can view their work in each enrolled section
+
+* They can work on a project
+
+Working on a project is the only confusing aspect. Projects are one
+long web page. Navigation is aided by a top-level navigation bar if
+provided. A project can have several questions embedded in it. These
+questions can be written to be self grading or may need to be graded
+by the teacher of the section. Questions can have a badge to keep
+track of the number of attempts, comments on a particular attempt, and
+hints to aid in the question. Whether these features is present
+depends on the project as written.
+
+The basic flow is that student answer the questions as indicated. When
+done they can "save" the work for their return or they can submit the
+work to be graded. Once submitted, no more changes are possible.
+
+The main student view shows the graded work and gives links to work on
+projects. In addition messages left for the student are displayed
+here.
+
+
+`r I(nav$add("The teacher view"))`
+
+Teachers have many possibilities
+
+* They can grade student work. The entry page shows each currently
+  open section a professor owns. A grid of student scores and statuses
+  is shown for each. Clicking a link can open the students work for
+  grading. Grading is fairly easy, as most every question is already
+  graded. Only open-ended questions can be graded. The student answer
+  is given in a text box. If they use R-markup in their response, the
+  output can be run through R.
+
+* They can admit students into a section. The basic idea is a student
+  is given an ID to allow them to request enrollment. You can veto
+  this enrollment, if desired.
+
+* They can create a class. A class is a collection of projects with
+  some order. The form to edit a class allows you to created a new
+  class or modify an existing one.
+
+* They can create a section. Students enroll in sections. Sections
+  have a list of projects and a list of students. The projects can be
+  cloned from an existing class allowing one to create sections for
+  different semesters or time periods. Projects can be
+  added/deleted/edited or viewed. It is important to be careful when
+  modifying a project if students have already started doing that
+  work.
+
+* They can leave a student a message. Sections or students can have a
+  message left for them using this form.
+
+<!--- Finish this off -->
+
+`r I(nav$write_footer())`
+
+
+`r I(page$write_footer())`

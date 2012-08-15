@@ -1,0 +1,140 @@
+    <form class="form-horizontal"
+	 id="fileupload"
+	 action="http://localhost:9000/custom/quizr/test"
+	 method="POST"
+	 enctype="multipart/form-data"
+	  >
+            <div class="row fileupload-buttonbar">
+	      
+
+              <span class="btn btn-success fileinput-button">
+                 <i class="icon-plus icon-white"></i>
+                 <span>Add file...</span>
+                 <input type="file" name="files[]" multiple> 
+              </span>
+
+  <button type="submit" class="btn btn-primary start">
+                    <i class="icon-upload icon-white"></i>
+                    <span>Start upload</span>
+                </button>
+	      <button type="reset" class="btn btn-warning cancel">
+	        <i class="icon-ban-circle icon-white"></i>
+	        <span>Cancel upload</span>
+	      </button>
+
+	      <!-- REFRESSH THE LIST HERE MAYBE SOME SPACE-->
+	      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	      <button type="refresh" class="btn btn-warning cancel"
+	        onclick="window.open('{{{base_url}}}/teacher_edit_sections/{{section_id}}', name='_parent');false"
+	      >
+	        <i class="icon-refresh icon-white"></i>
+	        <span>Refresh listing</span>
+	      </button>
+
+	    </div>
+	    <!-- The global progress information -->
+	    <!-- The loading indicator is shown during file processing -->
+	    <div class="fileupload-loading"></div>
+	    <!-- The table listing the files available for upload/download -->
+	    <table role="presentation" class="table table-striped">
+	      <tbody class="files"></tbody>
+	    </table>
+    </form>
+
+	    <!-- The template to display files available for upload -->
+<script id="template-upload" type="text/x-tmpl">
+alert("is valid?" + o.files.valid);
+{% for (var i=0, file; file=o.files[i]; i++) { %}
+    <tr class="template-upload fade">
+        <td class="name"><span>{%=file.name%}</span></td>
+        <td class="description"><input type="text" placeholder="Description..." id="description" value=""/> </td>
+        <td class="size">Public: <input type="checkbox" id="public" value="Public" /> </td>
+        {% if (file.error) { %}
+            <td class="error" colspan="2"><span class="label label-important">{%=locale.fileupload.error%}</span> {%=locale.fileupload.errors[file.error] || file.error%}</td>
+        {% } else if (o.files.valid && !i) { %}
+            <td>
+	       <div class="progress progress-success progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar" style="width:0%;"></div></div>
+            </td>
+            <td class="start">{% if (!o.options.autoUpload) { %}
+                <button class="btn btn-primary">
+                    <i class="icon-upload icon-white"></i>
+                    <span>{%=locale.fileupload.start%}</span>
+                </button>
+            {% } %}</td>
+        {% } else { %}
+            <td colspan="2"></td>
+        {% } %}
+        <td class="cancel">{% if (!i) { %}
+            <button class="btn btn-warning">
+                <i class="icon-ban-circle icon-white"></i>
+                <span>{%=locale.fileupload.cancel%}</span>
+            </button>
+        {% } %}</td>
+    </tr>
+{% } %}
+</script>
+
+
+
+    <!-- The template to display files available for download -->
+<script id="template-download" type="text/x-tmpl">
+{% for (var i=0, file; file=o.files[i]; i++) { %}
+    <tr class="template-download fade">
+        {% if (file.error) { %}
+            <td></td>
+            <td class="name"><span>{%=file.name%}</span></td>
+            <td class="size"><span>{%=o.formatFileSize(file.size)%}</span></td>
+             <td class="error" colspan="2"><span class="label label-important">{%=locale.fileupload.error%}</span> {%=locale.fileupload.errors[file.error] || file.error%}</td>
+        {% } else { %}
+            <td class="preview">{% if (file.thumbnail_url) { %}
+	      <i class="{%=file.thumbnail_url%}"></i>
+            {% } %}
+	    </td>
+            <td class="name">
+                {%=file.name%}
+            </td>
+            <td class="size"><span>{%=o.formatFileSize(file.size)%}</span></td>
+            <td colspan="2"></td>
+        {% } %}
+        <td class="delete">
+        </td>
+    </tr>
+{% } %}
+</script>
+
+
+    <!-- The jQuery UI widget factory, can be omitted if jQuery UI is already included -->
+<script src="{{{static_url}}}/blueimp/js/vendor/jquery.ui.widget.js"></script>
+
+<!-- The Templates plugin is included to render the upload/download listings -->
+<script src="http://blueimp.github.com/JavaScript-Templates/tmpl.min.js"></script>
+<!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
+
+<!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
+<script src="{{{static_url}}}/blueimp/js/jquery.iframe-transport.js"></script>
+<!-- The basic File Upload plugin -->
+<script src="{{{static_url}}}/blueimp/js/jquery.fileupload.js"></script>
+<!-- The File Upload file processing plugin -->
+<script src="{{{static_url}}}/blueimp/js/jquery.fileupload-fp.js"></script>
+<!-- The File Upload user interface plugin -->
+<script src="{{{static_url}}}/blueimp/js/jquery.fileupload-ui.js"></script>
+<!-- The localization script -->
+<script src="{{{static_url}}}/blueimp/js/locale.js"></script>
+<!-- The main application script -->
+<script src="{{{static_url}}}/blueimp/js/main.js"></script>
+<!-- The XDomainRequest Transport is included for cross-domain file deletion for IE8+ -->
+<!--[if gte IE 8]><script src="{{{static_url}}}/blueimp/js/cors/jquery.xdr-transport.js"></script><![endif]-->
+
+<script>
+    // This is called when the upload button is submitted
+$('#fileupload').bind('fileuploadsubmit', function (e, data) {
+    // The example input, doesn't have to be part of the upload form:
+    var input = $('#description');
+    data.formData = {description: $('#description').val(), public:$('#public').checked};
+    if (!data.formData.description) {
+      alert("No project description was specified")
+      input.focus();
+      return false;
+    }
+});
+</script>    

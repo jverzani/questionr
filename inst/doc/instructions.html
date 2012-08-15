@@ -1,0 +1,1125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0014)about:internet -->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+<title>Writing a project</title>
+
+<base target="_blank"/>
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 12px;
+   margin: 8px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 { 
+   font-size:2.2em; 
+}
+
+h2 { 
+   font-size:1.8em; 
+}
+
+h3 { 
+   font-size:1.4em; 
+}
+
+h4 { 
+   font-size:1.0em; 
+}
+
+h5 { 
+   font-size:0.9em; 
+}
+
+h6 { 
+   font-size:0.8em; 
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre {	
+   margin-top: 0;
+   max-width: 95%;
+   border: 1px solid #ccc;
+}
+
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code.r {
+   background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * { 
+      background: transparent !important; 
+      color: black !important; 
+      filter:none !important; 
+      -ms-filter: none !important; 
+   }
+
+   body { 
+      font-size:12pt; 
+      max-width:100%; 
+   }
+       
+   a, a:visited { 
+      text-decoration: underline; 
+   }
+
+   hr { 
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote { 
+      padding-right: 1em; 
+      page-break-inside: avoid; 
+   }
+
+   tr, img { 
+      page-break-inside: avoid; 
+   }
+
+   img { 
+      max-width: 100% !important; 
+   }
+
+   @page :left { 
+      margin: 15mm 20mm 15mm 10mm; 
+   }
+     
+   @page :right { 
+      margin: 15mm 10mm 15mm 20mm; 
+   }
+
+   p, h2, h3 { 
+      orphans: 3; widows: 3; 
+   }
+
+   h2, h3 { 
+      page-break-after: avoid; 
+   }
+}
+</style>
+
+<!-- Styles for R syntax highlighter -->
+<style type="text/css">
+   pre .operator,
+   pre .paren {
+     color: rgb(104, 118, 135)
+   }
+
+   pre .literal {
+     color: rgb(88, 72, 246)
+   }
+
+   pre .number {
+     color: rgb(0, 0, 205);
+   }
+
+   pre .comment {
+     color: rgb(76, 136, 107);
+   }
+
+   pre .keyword {
+     color: rgb(0, 0, 255);
+   }
+
+   pre .identifier {
+     color: rgb(0, 0, 0);
+   }
+
+   pre .string {
+     color: rgb(3, 106, 7);
+   }
+</style>
+
+<!-- R syntax highlighter -->
+<script type="text/javascript">
+var hljs=new function(){function m(p){return p.replace(/&/gm,"&amp;").replace(/</gm,"&lt;")}function f(r,q,p){return RegExp(q,"m"+(r.cI?"i":"")+(p?"g":""))}function b(r){for(var p=0;p<r.childNodes.length;p++){var q=r.childNodes[p];if(q.nodeName=="CODE"){return q}if(!(q.nodeType==3&&q.nodeValue.match(/\s+/))){break}}}function h(t,s){var p="";for(var r=0;r<t.childNodes.length;r++){if(t.childNodes[r].nodeType==3){var q=t.childNodes[r].nodeValue;if(s){q=q.replace(/\n/g,"")}p+=q}else{if(t.childNodes[r].nodeName=="BR"){p+="\n"}else{p+=h(t.childNodes[r])}}}if(/MSIE [678]/.test(navigator.userAgent)){p=p.replace(/\r/g,"\n")}return p}function a(s){var r=s.className.split(/\s+/);r=r.concat(s.parentNode.className.split(/\s+/));for(var q=0;q<r.length;q++){var p=r[q].replace(/^language-/,"");if(e[p]){return p}}}function c(q){var p=[];(function(s,t){for(var r=0;r<s.childNodes.length;r++){if(s.childNodes[r].nodeType==3){t+=s.childNodes[r].nodeValue.length}else{if(s.childNodes[r].nodeName=="BR"){t+=1}else{if(s.childNodes[r].nodeType==1){p.push({event:"start",offset:t,node:s.childNodes[r]});t=arguments.callee(s.childNodes[r],t);p.push({event:"stop",offset:t,node:s.childNodes[r]})}}}}return t})(q,0);return p}function k(y,w,x){var q=0;var z="";var s=[];function u(){if(y.length&&w.length){if(y[0].offset!=w[0].offset){return(y[0].offset<w[0].offset)?y:w}else{return w[0].event=="start"?y:w}}else{return y.length?y:w}}function t(D){var A="<"+D.nodeName.toLowerCase();for(var B=0;B<D.attributes.length;B++){var C=D.attributes[B];A+=" "+C.nodeName.toLowerCase();if(C.value!==undefined&&C.value!==false&&C.value!==null){A+='="'+m(C.value)+'"'}}return A+">"}while(y.length||w.length){var v=u().splice(0,1)[0];z+=m(x.substr(q,v.offset-q));q=v.offset;if(v.event=="start"){z+=t(v.node);s.push(v.node)}else{if(v.event=="stop"){var p,r=s.length;do{r--;p=s[r];z+=("</"+p.nodeName.toLowerCase()+">")}while(p!=v.node);s.splice(r,1);while(r<s.length){z+=t(s[r]);r++}}}}return z+m(x.substr(q))}function j(){function q(x,y,v){if(x.compiled){return}var u;var s=[];if(x.k){x.lR=f(y,x.l||hljs.IR,true);for(var w in x.k){if(!x.k.hasOwnProperty(w)){continue}if(x.k[w] instanceof Object){u=x.k[w]}else{u=x.k;w="keyword"}for(var r in u){if(!u.hasOwnProperty(r)){continue}x.k[r]=[w,u[r]];s.push(r)}}}if(!v){if(x.bWK){x.b="\\b("+s.join("|")+")\\s"}x.bR=f(y,x.b?x.b:"\\B|\\b");if(!x.e&&!x.eW){x.e="\\B|\\b"}if(x.e){x.eR=f(y,x.e)}}if(x.i){x.iR=f(y,x.i)}if(x.r===undefined){x.r=1}if(!x.c){x.c=[]}x.compiled=true;for(var t=0;t<x.c.length;t++){if(x.c[t]=="self"){x.c[t]=x}q(x.c[t],y,false)}if(x.starts){q(x.starts,y,false)}}for(var p in e){if(!e.hasOwnProperty(p)){continue}q(e[p].dM,e[p],true)}}function d(B,C){if(!j.called){j();j.called=true}function q(r,M){for(var L=0;L<M.c.length;L++){if((M.c[L].bR.exec(r)||[null])[0]==r){return M.c[L]}}}function v(L,r){if(D[L].e&&D[L].eR.test(r)){return 1}if(D[L].eW){var M=v(L-1,r);return M?M+1:0}return 0}function w(r,L){return L.i&&L.iR.test(r)}function K(N,O){var M=[];for(var L=0;L<N.c.length;L++){M.push(N.c[L].b)}var r=D.length-1;do{if(D[r].e){M.push(D[r].e)}r--}while(D[r+1].eW);if(N.i){M.push(N.i)}return f(O,M.join("|"),true)}function p(M,L){var N=D[D.length-1];if(!N.t){N.t=K(N,E)}N.t.lastIndex=L;var r=N.t.exec(M);return r?[M.substr(L,r.index-L),r[0],false]:[M.substr(L),"",true]}function z(N,r){var L=E.cI?r[0].toLowerCase():r[0];var M=N.k[L];if(M&&M instanceof Array){return M}return false}function F(L,P){L=m(L);if(!P.k){return L}var r="";var O=0;P.lR.lastIndex=0;var M=P.lR.exec(L);while(M){r+=L.substr(O,M.index-O);var N=z(P,M);if(N){x+=N[1];r+='<span class="'+N[0]+'">'+M[0]+"</span>"}else{r+=M[0]}O=P.lR.lastIndex;M=P.lR.exec(L)}return r+L.substr(O,L.length-O)}function J(L,M){if(M.sL&&e[M.sL]){var r=d(M.sL,L);x+=r.keyword_count;return r.value}else{return F(L,M)}}function I(M,r){var L=M.cN?'<span class="'+M.cN+'">':"";if(M.rB){y+=L;M.buffer=""}else{if(M.eB){y+=m(r)+L;M.buffer=""}else{y+=L;M.buffer=r}}D.push(M);A+=M.r}function G(N,M,Q){var R=D[D.length-1];if(Q){y+=J(R.buffer+N,R);return false}var P=q(M,R);if(P){y+=J(R.buffer+N,R);I(P,M);return P.rB}var L=v(D.length-1,M);if(L){var O=R.cN?"</span>":"";if(R.rE){y+=J(R.buffer+N,R)+O}else{if(R.eE){y+=J(R.buffer+N,R)+O+m(M)}else{y+=J(R.buffer+N+M,R)+O}}while(L>1){O=D[D.length-2].cN?"</span>":"";y+=O;L--;D.length--}var r=D[D.length-1];D.length--;D[D.length-1].buffer="";if(r.starts){I(r.starts,"")}return R.rE}if(w(M,R)){throw"Illegal"}}var E=e[B];var D=[E.dM];var A=0;var x=0;var y="";try{var s,u=0;E.dM.buffer="";do{s=p(C,u);var t=G(s[0],s[1],s[2]);u+=s[0].length;if(!t){u+=s[1].length}}while(!s[2]);if(D.length>1){throw"Illegal"}return{r:A,keyword_count:x,value:y}}catch(H){if(H=="Illegal"){return{r:0,keyword_count:0,value:m(C)}}else{throw H}}}function g(t){var p={keyword_count:0,r:0,value:m(t)};var r=p;for(var q in e){if(!e.hasOwnProperty(q)){continue}var s=d(q,t);s.language=q;if(s.keyword_count+s.r>r.keyword_count+r.r){r=s}if(s.keyword_count+s.r>p.keyword_count+p.r){r=p;p=s}}if(r.language){p.second_best=r}return p}function i(r,q,p){if(q){r=r.replace(/^((<[^>]+>|\t)+)/gm,function(t,w,v,u){return w.replace(/\t/g,q)})}if(p){r=r.replace(/\n/g,"<br>")}return r}function n(t,w,r){var x=h(t,r);var v=a(t);var y,s;if(v){y=d(v,x)}else{return}var q=c(t);if(q.length){s=document.createElement("pre");s.innerHTML=y.value;y.value=k(q,c(s),x)}y.value=i(y.value,w,r);var u=t.className;if(!u.match("(\\s|^)(language-)?"+v+"(\\s|$)")){u=u?(u+" "+v):v}if(/MSIE [678]/.test(navigator.userAgent)&&t.tagName=="CODE"&&t.parentNode.tagName=="PRE"){s=t.parentNode;var p=document.createElement("div");p.innerHTML="<pre><code>"+y.value+"</code></pre>";t=p.firstChild.firstChild;p.firstChild.cN=s.cN;s.parentNode.replaceChild(p.firstChild,s)}else{t.innerHTML=y.value}t.className=u;t.result={language:v,kw:y.keyword_count,re:y.r};if(y.second_best){t.second_best={language:y.second_best.language,kw:y.second_best.keyword_count,re:y.second_best.r}}}function o(){if(o.called){return}o.called=true;var r=document.getElementsByTagName("pre");for(var p=0;p<r.length;p++){var q=b(r[p]);if(q){n(q,hljs.tabReplace)}}}function l(){if(window.addEventListener){window.addEventListener("DOMContentLoaded",o,false);window.addEventListener("load",o,false)}else{if(window.attachEvent){window.attachEvent("onload",o)}else{window.onload=o}}}var e={};this.LANGUAGES=e;this.highlight=d;this.highlightAuto=g;this.fixMarkup=i;this.highlightBlock=n;this.initHighlighting=o;this.initHighlightingOnLoad=l;this.IR="[a-zA-Z][a-zA-Z0-9_]*";this.UIR="[a-zA-Z_][a-zA-Z0-9_]*";this.NR="\\b\\d+(\\.\\d+)?";this.CNR="\\b(0[xX][a-fA-F0-9]+|(\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?)";this.BNR="\\b(0b[01]+)";this.RSR="!|!=|!==|%|%=|&|&&|&=|\\*|\\*=|\\+|\\+=|,|\\.|-|-=|/|/=|:|;|<|<<|<<=|<=|=|==|===|>|>=|>>|>>=|>>>|>>>=|\\?|\\[|\\{|\\(|\\^|\\^=|\\||\\|=|\\|\\||~";this.ER="(?![\\s\\S])";this.BE={b:"\\\\.",r:0};this.ASM={cN:"string",b:"'",e:"'",i:"\\n",c:[this.BE],r:0};this.QSM={cN:"string",b:'"',e:'"',i:"\\n",c:[this.BE],r:0};this.CLCM={cN:"comment",b:"//",e:"$"};this.CBLCLM={cN:"comment",b:"/\\*",e:"\\*/"};this.HCM={cN:"comment",b:"#",e:"$"};this.NM={cN:"number",b:this.NR,r:0};this.CNM={cN:"number",b:this.CNR,r:0};this.BNM={cN:"number",b:this.BNR,r:0};this.inherit=function(r,s){var p={};for(var q in r){p[q]=r[q]}if(s){for(var q in s){p[q]=s[q]}}return p}}();hljs.LANGUAGES.r={dM:{c:[hljs.HCM,{cN:"number",b:"\\b0[xX][0-9a-fA-F]+[Li]?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+(?:[eE][+\\-]?\\d*)?L\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+\\.(?!\\d)(?:i\\b)?",e:hljs.IMMEDIATE_RE,r:1},{cN:"number",b:"\\b\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\.\\d+(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"keyword",b:"(?:tryCatch|library|setGeneric|setGroupGeneric)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\.",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\d+(?![\\w.])",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\b(?:function)",e:hljs.IMMEDIATE_RE,r:2},{cN:"keyword",b:"(?:if|in|break|next|repeat|else|for|return|switch|while|try|stop|warning|require|attach|detach|source|setMethod|setClass)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"literal",b:"(?:NA|NA_integer_|NA_real_|NA_character_|NA_complex_)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"literal",b:"(?:NULL|TRUE|FALSE|T|F|Inf|NaN)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"identifier",b:"[a-zA-Z.][a-zA-Z0-9._]*\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"<\\-(?!\\s*\\d)",e:hljs.IMMEDIATE_RE,r:2},{cN:"operator",b:"\\->|<\\-",e:hljs.IMMEDIATE_RE,r:1},{cN:"operator",b:"%%|~",e:hljs.IMMEDIATE_RE},{cN:"operator",b:">=|<=|==|!=|\\|\\||&&|=|\\+|\\-|\\*|/|\\^|>|<|!|&|\\||\\$|:",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"%",e:"%",i:"\\n",r:1},{cN:"identifier",b:"`",e:"`",r:0},{cN:"string",b:'"',e:'"',c:[hljs.BE],r:0},{cN:"string",b:"'",e:"'",c:[hljs.BE],r:0},{cN:"paren",b:"[[({\\])}]",e:hljs.IMMEDIATE_RE,r:0}]}};
+hljs.initHighlightingOnLoad();
+</script>
+
+<!-- MathJax scripts -->
+<script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+</head>
+
+<body>
+<script type="text/javascript"> 
+var student_answers = {};
+var comments = {missing:"Missing answer", correct:"Correct", incorrect:"Incorrect"};
+var student_id = "{{{STUDENT_ID}}}";
+var page_id = "{{{PAGE_ID}}}";
+</script>
+
+<p><link href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" rel="stylesheet"><br/>
+<link href="http://twitter.github.com/bootstrap/assets/css/bootstrap-responsive.css" rel="stylesheet"></p>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
+
+<script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script> 
+
+<script src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.0.3/bootstrap.min.js"></script>
+
+<script src="http://twitter.github.com/bootstrap/assets/js/bootstrap-tooltip.js"></script>
+
+<script src="http://twitter.github.com/bootstrap/assets/js/bootstrap-popover.js"></script>
+
+<script src="http://twitter.github.com/bootstrap/assets/js/bootstrap-modal.js"></script>
+
+<script src="http://twitter.github.com/bootstrap/assets/js/bootstrap-button.js"></script>
+
+<script src="http://twitter.github.com/bootstrap/assets/js/bootstrap-typeahead.js"></script>
+
+<script src="http://twitter.github.com/bootstrap/assets/js/bootstrap-tab.js"></script>
+
+<script src="http://twitter.github.com/bootstrap/assets/js/bootstrap-scrollspy.js"></script>
+
+<div id='main_message'></div>
+
+<p><header class="jumbotron subhead"><h1>Writing a project</h1><p class='lead'>Writing a project</p></header></p>
+
+<p><span><div id="navbar" class="navbar  navbar-fixed-top"><div class="navbar-inner"><ul id="navbar-header" class="nav"></ul></div></div></span><span id="subnav"></span></p>
+
+<script>$('#navbar-header').append("<li><a href='#nav1' target='_self'>About</a></li>");</script>
+
+<p><span><div id="nav1"></div></span><br/>
+<span><div class='page-header'><h2>About</h2></div></span></p>
+
+<p>The <code>questionr</code> package allows one to write projects containing<br/>
+questions that can be self grading or graded by an instructor. The<br/>
+projects display as one long web page with the possibility of a top<br/>
+navigation bar to aid in navigation.</p>
+
+<p>Self-grading questions can be written to </p>
+
+<ul>
+<li><p>have a hint</p></li>
+<li><p>give comments on incorrect answers</p></li>
+<li><p>have a badge to record the number of tries a student makes per question.</p></li>
+</ul>
+
+<script>$('#navbar-header').append("<li><a href='#nav2' target='_self'>The basic template</a></li>");</script>
+
+<p><span><div id="nav2"></div></span><br/>
+<span><div class='page-header'><h2>The basic template</h2></div></span></p>
+
+<p>The markup is done using <code>R-markdown</code>. The package requires some minimal header and footer content. The most minimal would be to put the following lines in an <code>AsIs</code> header:</p>
+
+<pre>
+&#96;&#96;&#96;{r echo=FALSE, results="asis"}
+## Nothing to see here ... move along
+require("questionr", quietly=TRUE)
+page <- questionr:::Page$new()
+cat(page$write_header())
+&#96;&#96;&#96;
+</pre>
+
+<p>and have the following minimal footer:</p>
+
+<pre>
+&#96;r I(page$write_footer())&#96;
+</pre>
+
+<p>Pages are prettier with navigation, but that is not required.</p>
+
+<script>$('#navbar-header').append("<li><a href='#nav3' target='_self'>Question types</a></li>");</script>
+
+<p><span><div id="nav3"></div></span><br/>
+<span><div class='page-header'><h2>Question types</h2></div></span></p>
+
+<p>There are several types of questions available:</p>
+
+<h3> Radio buttons </h3>
+
+<p>The <code>radio_choice</code> style allows a choice of one item from a list of<br/>
+values. The basic markup would look like:</p>
+
+<p>Pick a state:</p>
+
+<pre>
+&#96;r I(page$radio_choice(state.name[1:4], "Alaska"))&#96;
+&#96;r I(page$radio_choice(state.name[1:4], "Alaska"))&#96;
+</pre>
+
+<p>which gives:</p>
+
+<form class="form-inline">
+  <fieldset> 
+    <div class="control-group">
+      <label class="control-label"><span id='prob_1_badge' class='badge badge-info'>0 tries</span>&nbsp;New problem:</label>
+      <div class="controls">
+        <p id="prob_1_help" class="help-block"></p>
+      </div>
+    </div>
+  </fieldset>
+</form>
+
+<fieldset><span id='prob_1'>
+<label class='radio inline'><input type='radio' id='prob_1_1' class='prob_1XXX' name='prob_1' value='Alabama'>Alabama</label>
+<label class='radio inline'><input type='radio' id='prob_1_2' class='prob_1XXX' name='prob_1' value='Alaska'>Alaska</label>
+<label class='radio inline'><input type='radio' id='prob_1_3' class='prob_1XXX' name='prob_1' value='Arizona'>Arizona</label>
+<label class='radio inline'><input type='radio' id='prob_1_4' class='prob_1XXX' name='prob_1' value='Arkansas'>Arkansas</label>
+</span></fieldset>
+
+<p><br/></p>
+
+<p>That&#39;s a little minimal. One can add a new problem indicator, a hint and comments on incorrect answers. For example:</p>
+
+<pre>
+&#96;r I(page$new_problem())&#96;
+Pick a really large state:
+&#96;&#96;&#96;{r echo=FALSE, results="asis"}
+cat(page$radio_choice(state.name[1:4], "Alaska", 
+  hint="North to ...", 
+  comment=list("Alabama"="Nope, that's Sweet home Alabama", 
+               "Arizona"="Nope, the Grand Canyon State", 
+               "Arkansas"="Nope that's the Natural State"), 
+               linebreak=TRUE))
+&#96;&#96;&#96;
+</pre>
+
+<p>This yields</p>
+
+<form class="form-inline">
+  <fieldset> 
+    <div class="control-group">
+      <label class="control-label"><span id='prob_2_badge' class='badge badge-info'>0 tries</span>&nbsp;New problem:</label>
+      <div class="controls">
+        <p id="prob_2_help" class="help-block"></p>
+      </div>
+    </div>
+  </fieldset>
+</form>
+
+<p>Pick a really large state:</p>
+
+<fieldset><span id='prob_2'>
+<label class='radio inline'><input type='radio' id='prob_2_1' class='prob_2XXX' name='prob_2' value='Alabama'>Alabama</label>
+<label class='radio inline'><input type='radio' id='prob_2_2' class='prob_2XXX' name='prob_2' value='Alaska'>Alaska</label>
+<label class='radio inline'><input type='radio' id='prob_2_3' class='prob_2XXX' name='prob_2' value='Arizona'>Arizona</label>
+<label class='radio inline'><input type='radio' id='prob_2_4' class='prob_2XXX' name='prob_2' value='Arkansas'>Arkansas</label>
+</span></fieldset>
+
+<p><br/></p>
+
+<script>$('#prob_2').popover({title:'hint',content:'North to the future...'});</script>
+
+<p>The above example shows many things:</p>
+
+<ul>
+<li><p>the <code>new_problem</code> call will create a badge which records the number of tries and has a space for comments to be displayed. This is the default behaviour, but can be modified by calling with <code>add_badge=FALSE</code>. This default to the value of <code>instant_feedback</code> given to the <code>page</code> constructor.</p></li>
+<li><p>The <code>hint</code> argument allows one to give the students hints that popup on mouse overs</p></li>
+<li><p>The <code>comment</code> argument takes a named list where the names come from the incorrect answers and the values specify a comment.</p></li>
+<li><p>The problems are marked up inline wrapped with <code>I()</code> or in a block<br/>
+wrapped in <code>cat()</code>. Maybe this can be removed through some fancy<br/>
+<code>knitr</code> options, but it hasn&#39;t yet been done.</p></li>
+</ul>
+
+<h3>Checkbox groups</h3>
+
+<p>A checkgroup allows the student to select one <em>or more</em> from a set of values. The basic markup looks like:</p>
+
+<pre>
+&#96;r I(page$checkgroup_choice(state.name[1:4], c("Alabama", "Alaska")))&#96;
+</pre>
+
+<p>yielding:</p>
+
+<fieldset id='prob_3_fieldset'><span id='prob_3'>
+<label class='checkbox inline'><input type='checkbox' id='prob_3_1'  class='prob_3' name='prob_3' value='Alabama' />Alabama</label>
+<label class='checkbox inline'><input type='checkbox' id='prob_3_2'  class='prob_3' name='prob_3' value='Alaska' />Alaska</label>
+<label class='checkbox inline'><input type='checkbox' id='prob_3_3'  class='prob_3' name='prob_3' value='Arizona' />Arizona</label>
+<label class='checkbox inline'><input type='checkbox' id='prob_3_4'  class='prob_3' name='prob_3' value='Arkansas' />Arkansas</label>
+</span></fieldset>
+
+<p><br/></p>
+
+<p>Comments are specified using values combined with &ldquo;::&rdquo;. So for example</p>
+
+<pre><code class="r">comments &lt;- list(&quot;Alabama::Arkansas&quot;=&quot;Nope not right&quot;,
+             &quot;Alabama&quot;=&quot;Nope, one more&quot;)
+</code></pre>
+
+<p>The other combinations will get the default:</p>
+
+<form class="form-inline">
+  <fieldset> 
+    <div class="control-group">
+      <label class="control-label"><span id='prob_4_badge' class='badge badge-info'>0 tries</span>&nbsp;New problem:</label>
+      <div class="controls">
+        <p id="prob_4_help" class="help-block"></p>
+      </div>
+    </div>
+  </fieldset>
+</form>
+
+<fieldset id='prob_4_fieldset'><span id='prob_4'>
+<label class='checkbox inline'><input type='checkbox' id='prob_4_1'  class='prob_4' name='prob_4' value='Alabama' />Alabama</label>
+<label class='checkbox inline'><input type='checkbox' id='prob_4_2'  class='prob_4' name='prob_4' value='Alaska' />Alaska</label>
+<label class='checkbox inline'><input type='checkbox' id='prob_4_3'  class='prob_4' name='prob_4' value='Arizona' />Arizona</label>
+<label class='checkbox inline'><input type='checkbox' id='prob_4_4'  class='prob_4' name='prob_4' value='Arkansas' />Arkansas</label>
+</span></fieldset>
+
+<p><br/></p>
+
+<h3>Typeahead choice</h3>
+
+<p>A typeahead choice forces the user to type in their answers, but allows them to narrow the list of potential answers. It is useful when there can be many.</p>
+
+<p>For example, to select one of the 50 states:</p>
+
+<pre>
+&#96;r I(page$typeahead_choice(state.name, "Alaska", hint="North to the future"))&#96;
+</pre>
+
+<form class="form-inline">
+  <fieldset> 
+    <div class="control-group">
+      <label class="control-label"><span id='prob_5_badge' class='badge badge-info'>0 tries</span>&nbsp;New problem:</label>
+      <div class="controls">
+        <p id="prob_5_help" class="help-block"></p>
+      </div>
+    </div>
+  </fieldset>
+</form>
+
+<p>Enter a state:</p>
+
+<p><input type='text' class='typeahead disabled' data-provide='typeahead' id='prob_5'></p>
+
+<script>$('#prob_5').typeahead({source:[ "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming" ]});</script>
+
+<script>$('#prob_5').popover({title:'hint',content:'North to the future'});</script>
+
+<h3>Combobox or select choice</h3>
+
+<p>The <code>combobox_choice</code> gives the student a combobox to choose an item from. It is very similar to a radio choice, but manages screen space differently.</p>
+
+<pre>
+&#96;r I(page$new_problem())&#96;
+Pick a really large state:
+&#96;&#96;&#96;{r echo=FALSE, results="asis"}
+cat(page$combobox_choice(state.name[1:4], "Alaska", 
+  hint="North to the future...", 
+  comment=list("Alabama"="Nope, that's Sweet home Alabama", 
+               "Arizona"="Nope, the Grand Canyon State", 
+               "Arkansas"="Nope, that's the Natural State")))
+&#96;&#96;&#96;
+</pre>
+
+<form class="form-inline">
+  <fieldset> 
+    <div class="control-group">
+      <label class="control-label"><span id='prob_6_badge' class='badge badge-info'>0 tries</span>&nbsp;New problem:</label>
+      <div class="controls">
+        <p id="prob_6_help" class="help-block"></p>
+      </div>
+    </div>
+  </fieldset>
+</form>
+
+<p>Pick a really large state:<br/>
+<select class='combobox' id='prob_6'></p>
+
+<p><option value=''>Select one &hellip;</option></p>
+
+<p><option value='Alabama'>Alabama</option></p>
+
+<p><option value='Alaska'>Alaska</option></p>
+
+<p><option value='Arizona'>Arizona</option></p>
+
+<p><option value='Arkansas'>Arkansas</option></p>
+
+<p></select></p>
+
+<script>$('#prob_6').popover({title:'hint',content:'North to the future...'});</script>
+
+<h3>Numeric choices</h3>
+
+<p>A numeric choice allows the student to enter a number. To work around rounding issues, the problem can be set with a min and maximum allowable value. The comment list has names <code>less</code> and <code>more</code>. Here is a way to get $\pi$:</p>
+
+<pre>
+&#96;r I(page$new_problem())&#96;
+What is $\pi$?
+&#96;&#96;&#96;{r echo=FALSE, results="asis"}
+cat(page$numeric_choice(3.1, 3.2, 
+  comment=list(more="Too much", less="Too little")))
+&#96;&#96;&#96;
+</pre>
+
+<form class="form-inline">
+  <fieldset> 
+    <div class="control-group">
+      <label class="control-label"><span id='prob_7_badge' class='badge badge-info'>0 tries</span>&nbsp;New problem:</label>
+      <div class="controls">
+        <p id="prob_7_help" class="help-block"></p>
+      </div>
+    </div>
+  </fieldset>
+</form>
+
+<p>What is $\pi$?</p>
+
+<p><input type='text' class='numeric_answer' id='prob_7'></p>
+
+<h3>Free response</h3>
+
+<p>The <code>free_choice</code> option allows a student to enter in any text into a text box. The only option is a hint. These problems are not graded automatically, rather by the teacher of a section. While grading the text can be run through R-markdown.</p>
+
+<pre>
+&#96;&#96;&#96;{r echo=FALSE, results="asis"}
+cat(page$new_problem())
+cat(page$write("Well, how do you feel?"))
+cat(page$free_choice("Go ahead, enter whatever you want..."))
+&#96;&#96;&#96;
+</pre>
+
+<form class="form-inline">
+  <fieldset> 
+    <div class="control-group">
+      <label class="control-label"><span id='prob_8_badge' class='badge badge-info'>0 tries</span>&nbsp;New problem:</label>
+      <div class="controls">
+        <p id="prob_8_help" class="help-block"></p>
+      </div>
+    </div>
+  </fieldset>
+</form>
+
+<p><br/>Well, how do you feel?<br/>Well, how do you feel?</p>
+
+<p><textarea class="free input-xlarge" id="prob_8" rows=4 cols=80></textarea></p>
+
+<script>$('#prob_8').popover({title:'hint',content:'Go ahead, enter whatever you want...'});</script>
+
+<script>$('#navbar-header').append("<li><a href='#nav4' target='_self'>Randomization</a></li>");</script>
+
+<p><span><div id="nav4"></div></span><br/>
+<span><div class='page-header'><h2>Randomization</h2></div></span></p>
+
+<p>Problems can be radomized. Each student has their own random seed, and<br/>
+each project is generated with that seed. So different students will<br/>
+(likely) get different projects, but the same student should always<br/>
+get the same one. With this, problems can be randomized. For example, this problem asks a student to estimate the mean from a histogram:</p>
+
+<pre>
+&#96;&#96;&#96;{r echo=FALSE, results="asis"}
+mu <- sample(1:10, 1); sigma=sample(1:3, 1)
+x <- rnorm(100, mu, sigma)
+cat(page$new_problem())
+hist(x)
+page$write("Guess the mean from the histogram")
+cat(page$numeric_choice(mu-sigma/2, mu + sigma/2))
+&#96;&#96;&#96;
+</pre>
+
+<form class="form-inline">
+  <fieldset> 
+    <div class="control-group">
+      <label class="control-label"><span id='prob_9_badge' class='badge badge-info'>0 tries</span>&nbsp;New problem:</label>
+      <div class="controls">
+        <p id="prob_9_help" class="help-block"></p>
+      </div>
+    </div>
+  </fieldset>
+</form>
+
+<p><img src="data:image/png;base64,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" alt="plot of chunk unnamed-chunk-8"/> <br/>Guess the mean from the histogram<br/>Guess the mean from the histogram</p>
+
+<p><input type='text' class='numeric_answer' id='prob_9'></p>
+
+<script>$('#navbar-header').append("<li><a href='#nav5' target='_self'>Navigation</a></li>");</script>
+
+<p><span><div id="nav5"></div></span><br/>
+<span><div class='page-header'><h2>Navigation</h2></div></span></p>
+
+<p>The basic page has no navigation features. Adding them is easy. We create an <code>nav</code> object in the header with:</p>
+
+<pre>
+&#96;&#96;&#96; {r echo=FALSE, results="asis"}
+## Nothing to see here ... move along
+require("questionr", quietly=TRUE)
+page <- questionr:::Page$new()
+nav <- questionr:::NavBar$new()
+cat(page$write_header())
+&#96;&#96;&#96;
+</pre>
+
+<p>Then when we want to add navigation (which consists of an item in the menu bar and a heading in the file, we use the <code>add</code> method:</p>
+
+<pre>
+&#96;r I(nav$add("Some navigation"))&#96;
+</pre>
+
+<p>To finish navigation we call the <code>write_footer</code> method. This is usually just part of the footer along with a call to the <code>write_footer</code> method of the page object.</p>
+
+<script>$('#navbar-header').append("<li><a href='#nav6' target='_self'>Tabs</a></li>");</script>
+
+<p><span><div id="nav6"></div></span><br/>
+<span><div class='page-header'><h2>Tabs</h2></div></span></p>
+
+<p>One can add a notebook with tabs to compress the necessary vertical space. This is useful for grouping related items together in a question, such as diagnostic graphics. The tab container is made with the <code>Tabs</code> reference class and new pages added with the <code>add</code> method. All tabs are wrapped in a <code>write_header</code> and <code>write_footer</code>. For example, this code:</p>
+
+<pre>
+&#96;&#96;&#96;{r echo=FALSE, results="asis"}
+tabs <- questionr:::Tabs$new()
+cat(tabs$write_header())
+
+x <- rnorm(100)
+&#96;&#96;&#96;
+
+&#96;r I(tabs$add("Summary"))&#96;
+&#96;&#96;&#96;{r}
+summary(x)
+&#96;&#96;&#96;
+&#96;r I(tabs$add("boxplot"))&#96;
+&#96;&#96;&#96;{r}
+boxplot(x)
+&#96;&#96;&#96;
+
+&#96;r I(tabs$write_footer())&#96;
+
+</pre>
+
+<p>makes these tabs:</p>
+
+<ul id='IQWPLFZISW' class='nav nav-tabs'></ul>
+
+<p><span><div class="tab-content"></p>
+
+<script>$('#IQWPLFZISW').append("<li><a href='#tab_no_IQWPLFZISW_1'  data-toggle='tab'>Summary</a></li>");</script>
+
+<p><span><div id="tab_no_IQWPLFZISW_1" class="tab-pane"></p>
+
+<pre><code class="r">summary(x)
+</code></pre>
+
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##  -2.290  -0.902   0.156   0.061   0.911   3.130 
+</code></pre>
+
+<p></div></span></p>
+
+<script>$('#IQWPLFZISW').append("<li><a href='#tab_no_IQWPLFZISW_2'  data-toggle='tab'>boxplot</a></li>");</script>
+
+<p><span><div id="tab_no_IQWPLFZISW_2" class="tab-pane"></p>
+
+<pre><code class="r">boxplot(x)
+</code></pre>
+
+<p><img src="data:image/png;base64,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AKJLECBAgACBbAICPltH1EOAAAECBAoICPgCiC5BgAABAgSyCQj4bB1RDwECBAgQKCAg4AsgugQBAgQIEMgmIOCzdUQ9BAgQIECggICAL4DoEgQIECBAIJuAgM/WEfUQIECAAIECAgK+AKJLECBAgACBbAICPltH1EOAAAECBAoICPgCiC5BgAABAgSyCQj4bB1RDwECBAgQKCAg4AsgugQBAgQIEMgmIOCzdUQ9BAgQIECggICAL4DoEgQIECBAIJuAgM/WEfUQIECAAIECAgK+AKJLECBAgACBbAICPltH1EOAAAECBAoICPgCiC5BgAABAgSyCQj4bB1RDwECBAgQKCAg4AsgugQBAgQIEMgmIOCzdUQ9BAgQIECggICAL4DoEgQIECBAIJuAgM/WEfUQIECAAIECAgK+AKJLECBAgACBbAICPltH1EOAAAECBAoICPgCiC5BgAABAgSyCQj4bB1RDwECBAgQKCAg4AsgugQBAgQIEMgmIOCzdUQ9BAgQIECggICAL4DoEgQIECBAIJuAgM/WEfUQIECAAIECAgK+AKJLECBAgACBbAICPltH1EOAAAECBAoICPgCiC5BgAABAgSyCQj4bB1RDwECBAgQKCAg4AsgugQBAgQIEMgmIOCzdUQ9BAgQIECggICAL4DoEgQIECBAIJuAgM/WEfUQIECAAIECAgK+AKJLECBAgACBbAICPltH1EOAAAECBAoICPgCiC5BgAABAgSyCQj4bB1RDwECBAgQKCAg4AsgugQBAgQIEMgmIOCzdUQ9BAgQIECggICAL4DoEgQIECBAIJuAgM/WEfUQIECAAIECAgK+AKJLECBAgACBbAICPltH1EOAAAECBAoICPgCiC5BgAABAgSyCQj4bB1RDwECBAgQKCAg4AsgugQBAgQIEMgmIOCzdUQ9BAgQIECggICAL4DoEgQIECBAIJuAgM/WEfUQIECAAIECAgK+AKJLECBAgACBbAICPltH1EOAAAECBAoICPgCiC5BgAABAgSyCQj4bB1RDwECBAgQKCAg4AsgugQBAgQIEMgmIOCzdUQ9BAgQIECggICAL4DoEgQIECBAIJuAgM/WEfUQIECAAIECAgK+AKJLECBAgACBbAICPltH1EOAAAECBAoICPgCiC5BgAABAgSyCQj4bB1RDwECBAgQKCAg4AsgugQBAgQIEMgmIOCzdUQ9BAgQIECggICAL4DoEgQIECBAIJvA/wNhGjz0Md9VSAAAAABJRU5ErkJg" alt="plot of chunk unnamed-chunk-11"/> </p>
+
+<p></div></span><br/>
+</div></span></p>
+
+<hr/>
+
+<script>$('#navbar-header').append("<li><a href='#nav7' target='_self'>Deploying</a></li>");</script>
+
+<p><span><div id="nav7"></div></span><br/>
+<span><div class='page-header'><h2>Deploying</h2></div></span></p>
+
+<p>Once knit, pages are standalone, self grading web pages. The grading can happen instantly and the badges and comments give the necessary feedback. This is the default behaviour. For such pages, the HTML is self contained and can be hosted anywhere. For exampe Rpubs.</p>
+
+<p>Pages can also be shown within the system provided by this package. For such use, one should add buttons near the bottom. The call for this is:</p>
+
+<pre>
+&#96;r I(page$grade_button())&#96;
+</pre>
+
+<p>To deploy these pages, a teacher must upload them into a class or section as projects.</p>
+
+<!--- Finish this off -->
+
+<script>
+$('body').css('margin', '40px 10px');
+//$('body').attr('data-offset','40');
+//$('body').attr('data-target','#subnav');
+$('body').attr('data-spy','scroll');
+//$('[data-spy="scroll"]').each(function () {
+//   var $spy = $(this).scrollspy('refresh')
+//});
+</script>
+
+<div id='grade_alert'></div>
+
+<script>
+
+var tmp = $(".nav-tabs")
+$.each(tmp, function(key, value) {
+  $("#" + value.id + " a:first").tab("show")
+});
+ 
+$("#navbar").scrollspy();
+$("body").attr("data-spy", "scroll");
+$("[data-spy=\'scroll\']").each(function () {
+  var $spy = $(this).scrollspy("refresh")
+});
+
+function comment_default(grade, stud_ans, comment, def) {
+    var cmt = "";
+    if(grade == 100) {
+    cmt = def.correct;
+    } else if(typeof(comment) != "undefined") {
+    if(typeof(comment[stud_ans]) != "undefined") {
+        cmt = comment[stud_ans];
+    } else {
+        cmt = def.incorrect;
+    }
+    } else {
+    cmt = def.incorrect;
+    }
+    return cmt;
+};
+
+function comment_checkgroup(grade, stud_ans, comment, def) {
+    var tmp = []; 
+    $.each(stud_ans, function(key, value) {if(value !== null) tmp.push(value)});
+    return comment_default(grade, tmp.sort().join("::"), comment, def);
+};
+
+function comment_numeric(grade, stud_ans, value, comment, def) {
+    var cmt = "";
+    if(grade == 100) {
+    cmt = def.correct;
+    } else if(typeof(comment) != "undefined") {
+    if(stud_ans < value[0]) {
+        if(typeof(comment.less) != "undefined") {
+        cmt = comment.less
+        } else {
+        cmt = def.incorrect
+        }
+    } else if(stud_ans > value[1]) {
+        if(typeof(comment.more) != "undefined") {
+        cmt = comment.more
+        } else {
+        cmt = def.incorrect
+        }
+    }
+    } else {
+    cmt = def.incorrect;
+    }
+    return cmt;
+}
+function grade_radio(ans, value) {return( ans == value ? 100 : 0) };
+function grade_checkboxgroup(ans, value) {
+  var out=[];
+  $.each(ans, function(key, value) { if(value != null) { out.push(value) }});
+  if(out.length != value.length) { return(0) };
+  out = out.sort();
+  var value = value.sort()
+  for(var i=0; i < out.length; i++) {
+    if(out[i] != value[i]) { return(0) }
+  }
+  return(100)
+};
+function grade_typeahead(ans, value) { return( (ans == value) ? 100 : 0 )};
+function grade_combo(ans, value) { return( (ans == value) ? 100 : 0) };
+function grade_numeric(ans, value) { return( (ans >= value[0] && ans <= value[1]) ? 100 : 0) };
+
+
+
+function submit_work(status) {
+    $.ajax({
+    url:"/set_answers",
+    type:"POST",
+    data: {
+        answers:JSON.stringify(student_answers),
+        status:status,
+        project_id:page_id
+    },
+    success:function(data) {
+        window.location.replace("");
+    }
+    });
+};
+
+function set_radio(id, value) {
+  $("#" + id + " [value=" + value + "]").attr("checked", true);
+};
+
+function set_checkboxgroup(id, value) {
+  $("#" + id + " [type=checkbox]").attr("checked", false);
+  $.each(value, function(idx, val) {
+    $("#" + id + " [value=" + val + "]").attr("checked", true)
+  })
+};
+
+
+function set_typeahead(id, value) {
+    $("#" + id).val(value)
+};
+
+function set_combo(id, value) {
+    if(value.length > 0) {
+    $("#" + id + " [value=" + value + "]").attr("selected", true)
+    } else {
+    $("#" + id)[0].selectedIndex=0;
+    }
+
+};
+
+function set_numeric(id, value) {
+    $("#" + id).val(value)
+};
+
+function set_free(id, value) {
+    $("#" + id).val(value);
+};
+
+function set_answer(o) {
+    var id = o.problem; 
+    var value = o.answer;
+    var type = o.type
+    if(type == "radio") {
+    set_radio(id, value)
+    } else if(type == "checkbox") {
+    set_checkboxgroup(id, value)
+    } else if(type == "typeahead") {
+    set_typeahead(id, value)
+    } else if(type == "combo") {
+    set_combo(id, value)
+    } else if(type == "numeric") {
+    set_numeric(id, value)
+    } else if(type == "free") {
+    set_free(id, value)
+    }
+};
+
+function set_answers(status, stud_ans) {
+    $.each(stud_ans, function(key, value) {
+    set_answer(value);
+    if(typeof(value.comment) != "undefined") {
+        var cmt = '<div class="alert"><a class="close" data-dismiss="alert" href="#">×</a>' + value.comment + '</div>'
+        var x =  $("#" + value.problem + "_help");
+        if(x.length > 0) {
+        x[0].innerHTML = cmt;
+        }
+        if(status == "graded") {
+        var x =  $("#" + value.problem + "_comment");
+        if(x.length > 0) {
+            x[0].innerHTML = cmt;
+        }
+        }
+    }
+    });
+};
+
+var is_open=false;
+
+function write_grade_table() {
+    var a = student_answers;
+    if(is_open) {
+    $("#gradealert").alert('close');
+    } else {
+    $("#grade_alert").append('<div id = "fillmein"></div>');
+
+    $("#fillmein").append('<div id="gradealert" class="alert alert-block fade in"><button class="close" data-dismiss="alert">×</button>');
+    $("#gradealert").append('<h2>Congratulations, your scores so far are:</h2>');  
+    $("#gradealert").append('<table id="grade_alert_table" class="table table-bordered table-striped">');
+    $("#gradealert").append("</table></div>");
+    
+    $("#grade_alert_table").append('<thead><tr><th>Problem</th><th>Score</th><th>Comment</th></tr></thead><tbody>');
+
+    var icon_lookup = {true:"icon-thumbs-up", false:"icon-thumbs-down", missing:"icon-warning-sign"};
+    var msg_lookup = {true:"Correct", false: "Incorrect", missing:"Missing"};
+
+    $.each(a, function() {
+        $("#grade_alert_table").append("<tr>" +
+                       "<td>" + 
+                       "<a class='grade_clicker' href='#" + this.problem + "' target='_self'>" +
+                       "Problem " + this.problem.replace("prob_", "") + "</a></td>" +
+                       " <td>" + 
+                       "<i class='" + icon_lookup[this.grade] + "'></i>&nbsp;" +
+                       msg_lookup[this.grade] + "</td>" +
+                       "<td>" + this.comment + "</td>" +
+                       "</tr>");
+    })
+        $("#grade_alert_table").append('</tbody>');
+    $(".grade_clicker").each(function() { this.onclick = function() {$("#gradealert").alert('close')}})
+        $("#gradealert").alert();
+    is_open = true;
+    $("#gradealert").bind("closed", function() {is_open=false});
+    }
+};
+$(document).ready(function() {
+    $(".btn").button()
+
+    var cmt_defaults={correct:comments.correct, 
+              incorrect:comments.incorrect,
+              missing:comments.missing
+             }; 
+    var fix_badge = function(key, tries, answer, comment) {
+    $('#' + key + "_badge").each(function() {this.innerHTML = tries + (tries == 1 ? " try" : " tries")});
+    $.each(['badge-info', 'badge-warning', 'badge-success'], function(idx, value) {
+        $('#' + key + "_badge").removeClass(value)
+    });
+    if(answer == true) {
+        $('#' + key + "_badge").addClass("badge-success");
+    } else {
+        $('#' + key + "_badge").addClass("badge-warning");
+    };
+    $('#' + key + "_help").each(function() {
+        this.innerHTML=
+        "<div class='alert alert-info'><a class='close' data-dismiss='alert' href='#'>×</a>" + comment + "</div>";
+    });
+    
+    }
+    var close_comment = function(key) {
+    $("#" + key + "_comment > .alert").alert("close");
+    };
+    $("[type=\'radio\']").each(function() {
+    student_answers[this.name]={problem:this.name, type:'radio', tries:0};
+    this.onchange = function() {
+        var key = this.name;
+        var sans = this.value;
+        var answer = grade_radio(sans, actual_answers[key].value);
+        var comment = comment_default(answer, sans, comments[key], cmt_defaults); 
+        var tries = student_answers[key].tries + 1;
+        student_answers[key] = {
+        problem:key,
+        type:'radio',
+        tries:tries,
+        answer:sans,
+        grade:answer,
+        comment:comment
+        };
+        fix_badge(key, tries, answer, comment);
+    }
+    }
+                  );
+    $("[type=\'checkbox\']").each(function() {
+    var n = $("#" + this.name + "> .checkbox").length
+    var ans = {};
+    for(i=1; i <= n; i++) {ans[this.name + "_" + i] = null;}
+    student_answers[this.name] = {
+        problem: this.name,
+        type:'checkbox',
+        tries:0,
+        answer:ans
+    };
+    this.onchange = function() {
+        var key = this.name;
+        var sans = student_answers[key].answer;
+        if(this.checked) {
+        sans[this.id] = this.value;
+        } else {
+        sans[this.id] = null;
+        }
+        var answer = grade_checkboxgroup(sans, actual_answers[key].value);
+        var comment = comment_checkgroup(answer, sans, comments[key], cmt_defaults); 
+        var tries = student_answers[key].tries + 1;
+
+        student_answers[key] = {
+        problem:key,
+        type:'checkbox',
+        tries:tries,
+        answer:sans,
+        grade:answer,
+        comment:comment
+        };
+        fix_badge(key, tries, answer, comment)
+    }
+    });
+    $(".typeahead").each(function() {
+    if(this.id.length > 0) {
+        student_answers[this.id]={problem:this.id, type:'typeahead',  tries:0};
+    }
+    this.onchange = function() {
+        var key = this.id;
+        var sans = this.value;
+        var answer = grade_typeahead(sans, actual_answers[key].value);
+        var comment = comment_default(answer, sans, comments[key], cmt_defaults); 
+        var tries = student_answers[key].tries + 1;
+
+        student_answers[key] = {
+        problem:key,
+        type:"typeahead",
+        tries:student_answers[key].tries + 1,
+        answer:sans,
+        grade:answer,
+        comment:comment
+        };
+        fix_badge(key, tries, answer, comment)
+    }
+    });
+    
+    $(".combobox").each(function() { 
+    student_answers[this.id]={problem:this.id, type:'combo', tries:0};
+    this.onchange = function() {
+        var key = this.id;
+        var sans = this.value;
+        var answer = grade_combo(sans, actual_answers[key].value);
+        var comment = comment_default(answer, sans, comments[key], cmt_defaults); 
+        var tries = student_answers[key].tries + 1;
+
+        student_answers[key] = {
+        problem:key,
+        type:"combo",
+        tries:tries,
+        answer:sans,
+        grade:answer,
+        comment:comment
+        };
+        fix_badge(key, tries, answer, comment)
+    }
+    });
+    $(".numeric_answer").each(function() {
+    student_answers[this.id]={problem:this.id, type:'numeric', tries:0};
+    this.onchange = function() {
+        var key = this.id;
+        var sans = this.value;
+        var answer = grade_numeric(sans, actual_answers[key].value);
+        var comment = comment_numeric(answer, sans, 
+                      actual_answers[key].value,
+                      comments[key],
+                      cmt_defaults); 
+        var tries = student_answers[key].tries + 1;
+
+        student_answers[key] = {
+        problem:key,
+        type:"numeric",
+        tries:tries,
+        answer:sans,
+        grade:answer,
+        comment:comment
+        };
+        fix_badge(key, tries, answer, comment)
+    }
+    });
+    $(".free").each(function() {
+    student_answers[this.id]={problem:this.id, type:'free', tries:0};
+    this.onchange = function() {
+        var key = this.id;
+        var sans = this.value;
+        student_answers[key].answer = sans;
+    };
+    });
+
+    var restore_badges = function(x) {
+    $.each(x, function(key, value) {
+    var badge = $("#" + key + "_badge");
+    if(badge.length > 0) {
+        var tries = x[key].tries;
+        badge[0].innerHTML = tries + " tries"
+    }
+    })
+}
+    // get answers from server, restore
+    $.ajax({
+    url:"http://localhost:9000/custom/quizr/get_answers", 
+    type:'POST',
+    data:{ project_id:page_id}, 
+    success:function(data, status, jqxhr) {
+       
+        if(data.status == "error") {
+        return null;
+        }
+        
+        student_answers = data.answers;
+        set_answers(data.status, data.answers);
+        restore_badges(student_answers);
+
+        if(data.status == "graded") {
+        // no more changes!
+        $("button").addClass("disabled");
+        $("button").each(function() {this.onclick=null});
+            
+        $.each($('[id*="prob"]'), function() {this.onchange = null});
+        $("input").attr("disabled", "disabled");
+        $("select").attr("disabled", "disabled");
+        
+        $(".badge").each(function() {this.innerHTML = "graded"});
+
+        $("#main_message").append('<div class="alert alert-block alert-info"><a class="close" data-dismiss="alert" href="#">×</a><b>This was already graded</b>, no more changes are possible.</div>');
+        }
+    }
+    });
+});
+</script>
+
+<script>var actual_answers={ "prob_1": {
+ "type": "radio",
+"value": "Alaska" 
+},"prob_2": {
+ "type": "radio",
+"value": "Alaska" 
+},"prob_3": {
+ "type": "checkgroup",
+"value": [ "Alabama", "Alaska" ] 
+},"prob_4": {
+ "type": "checkgroup",
+"value": [ "Alabama", "Alaska" ] 
+},"prob_5": {
+ "type": "typeahead",
+"value": "Alaska" 
+},"prob_6": {
+ "type": "combobox",
+"value": "Alaska" 
+},"prob_7": {
+ "type": "numeric",
+"value": [    3.1,    3.2 ] 
+},"prob_8": {
+ "type": "free",
+"value": "null" 
+},"prob_9": {
+ "type": "numeric",
+"value": [      8,     10 ] 
+} };</script>
+
+<script>comments={ "missing": "Missing answer","correct": "Correct answer","incorrect": "Incorrect answer","prob_2": {
+ "Alabama": "Nope, that's Sweet home Alabama",
+"Arizona": "Nope, the Grand Canyon State",
+"Arkansas": "Nope, that's the Natural State" 
+},"prob_4": {
+ "Alabama::Arkansas": "Nope not right",
+"Alabama": "Nope, one more" 
+},"prob_6": {
+ "Alabama": "Nope, that's Sweet home Alabama",
+"Arizona": "Nope, the Grand Canyon State",
+"Arkansas": "Nope, that's the Natural State" 
+},"prob_7": {
+ "more": "Too much",
+"less": "Too little" 
+} };</script>
+
+</body>
+
+</html>

@@ -1,0 +1,14 @@
+
+{{#teacher_instructions}}
+<script>
+$(document).ready(function() {
+var tmp = localStorage.getItem("show_teacher_instructions");
+if(typeof(tmp) == "undefined" || tmp == "true") { 
+  var instructions = "{{{teacher_instructions}}}";
+  var close_button = '<button id="close_instructions" class="close" data-dismiss="alert">×</button>';
+  $("#instructions").append('<div class="alert">' + close_button + instructions +  '</div>');
+  $(".alert").alert();
+  }
+ })
+</script>
+{{/teacher_instructions}}

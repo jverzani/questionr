@@ -1,0 +1,180 @@
+``` {r echo=FALSE, results="asis"}
+## Nothing to see here ... move along
+require("questionr", quietly=TRUE)
+page <- questionr:::Page$new()
+nav <- questionr:::NavBar$new()
+cat(page$write_header())
+```
+
+`r I(nav$write_header("Reading the common graphics of univariate statistics"))`
+
+``` {r echo=FALSE}
+## put startup R commands here
+require(ggplot2)
+```
+
+
+This web page quizzes you on your ability to read the basic graphics
+of exploratory data analysis. Just answer the questions below by
+eyeballing the graphs. To see how you did, click the "grade" button at
+the bottom.
+
+`r I(nav$add("Stem and Leaf"))`
+
+
+For moderate-sized data sets the stem-and-leaf plot lets us quickly
+identify the center, spread and shape of a distribution, as well as
+identify quantiles.
+
+Suppose our data set is `x`.
+
+``` {r echo=FALSE}
+sc <- sample(2:4, 1)
+x <- sample((10^sc):(10^sc + 99), 13)
+m <- min(x); M <- max(x); iqr <- IQR(x); med <- median(x); mean <- mean(x)
+```
+
+The stem and leaf plot of x is found by:
+``` {r}
+stem(x, scale=2)
+```
+
+`r I(page$new_problem())` What is the maximum value of `x` recorded in the data?
+
+`r I(page$numeric_choice(M, M))`
+
+
+`r I(page$new_problem())` What is the median value of `x` recorded in the data?
+
+`r I(page$numeric_choice(med, med, hint="find the middle..."))`
+
+`r I(page$new_problem())` Is the shape of `x` "long-tailed"
+
+`r I(page$radio_choice(c("Yes", "No"), "No", hint="some hint"))`
+
+
+
+`r I(nav$add("Boxplots"))`
+
+Boxplots allow us to quickly see the center, spread and rough shape of
+a distribution in a graphic that invites comparison of many
+distributions together (side-by-side boxplots).
+
+``` {r}
+p <- ggplot(morley, aes(x=factor(Expt), y=Speed))
+p + geom_boxplot()
+```
+
+The graphic shows a summary of the measured speed of light (in some
+scale) for each of 5 experiments recorded in the `morley` data set.
+
+`r I(page$new_problem())` Which of the 5 experiments have "outliers" as determined by the 1.5 IQR rule?
+
+`r I(page$checkgroup_choice(as.character(1:5), as.character(c(1,3)), hint="Outlier values are marked individually"))`
+
+`r I(page$new_problem())` Which of the 5 experiments had the largest median value?
+`r I(page$radio_choice(as.character(1:5), "1"))`
+
+`r I(page$new_problem())` Which of the 5 experiments had the smallest recorded value?
+`r I(page$radio_choice(as.character(1:5), "3"))`
+
+`r I(page$new_problem())` For experiment 1, the value of the Q3 is more than the maximum value of which experiments?
+`r I(page$checkgroup_choice(as.character(2:5), as.character(c(2:5)), hint="Outlier values are marked individually"))`
+
+
+
+`r I(nav$add("Histograms"))`
+
+
+Histograms allow us to quickly identify the center, spread and shape
+of a distribution for arbitrarily large data sets. This is unlike the
+stem and leaf plot, an excellent graphic that unfortunately doesn't
+scale well to larger sets of numbers.
+
+``` {r echo=FALSE}
+mu <- sample(5:25,1)
+s <- sample(3:10, 1)
+x <- rnorm(100, mean=mu, sd=s)
+```
+
+```{r}
+qplot(x, binwidth=diff(range(x))/30)
+```
+
+Answer the following questions based on the histogram of `x`:
+
+`r I(page$new_problem())` What is the median value of `x`?
+
+`r I(page$numeric_choice(median(x) - s/2, median(x) + s/2, hint="split the area in half"))`
+
+
+`r I(page$new_problem())` What is the mean value of `x`?
+`r I(page$numeric_choice(mean(x) - s/2, mean(x) + s/2, hint="Look to balance the (weighted) area"))`
+
+`r I(page$new_problem())` Which boxplot best represents `x`:
+
+```{r echo=FALSE}
+x1 <- mu + s*rt(100, df=3)
+x2 <- mu -s + s*rexp(100)
+x3 <- x
+m <- data.frame(x1=x1, x2=x2, x3=x3)
+d <- stack(m)
+```
+
+```{r}
+p <- ggplot(d, aes(y=values, x=ind))
+p + geom_boxplot()
+```
+
+`r I(page$radio_choice(c("x1", "x2", "x3"), "x3", comment=list(x1="too long tailed", x2="this is skewed right")))`
+
+
+`r I(nav$add("Density plots"))`
+
+A density plot is often seen overlaid a histogram, as in the figure
+below. This is a bit redundant, both give a visual estimate of the
+parent population of a random sample. The histogram has more `chart
+junk`, as Tufte might say, but the density plot is less familiar.
+
+```{r}
+p <- ggplot(diamonds, aes(x=carat))
+p + geom_histogram(aes(y=..density..)) + geom_density(alpha=.2, fill="#FF6666") 
+```
+
+`r I(page$new_problem())` Based on the plot of `carat`, estimate the mean value for this data:
+
+```{r echo=FALSE, results="asis"}
+x <- diamonds$carat; xbar <- mean(x); s <- sd(x)
+cat(page$numeric_choice(xbar - s/2, xbar + s/2))
+```
+
+`r I(page$new_problem())` Based on the shape of the graph, would you say the distribution is
+`r I(page$radio_choice(c("symmetric", "skewed", "neither"), "skewed"))`
+
+`r I(page$new_problem())` Based on the shape of the graph, would you say the distribution is
+`r I(page$radio_choice(c("short-tailed", "long-tailed", "neither"), "long-tailed"))`
+
+
+
+
+`r I(nav$add("qqplots"))`
+
+The quantile-quantile plot allows one to compare one distribution
+against the other. The two are similar up to changes of scale and
+spread if the `qqplot` is essentially straight.
+
+```{r}
+df <- data.frame(rivers) 
+ggplot(df, aes(sample = rivers)) + stat_qq() 
+```
+
+`r I(page$new_problem())` Based on the graphic above, is the `rivers` data approximately normal?
+`r I(page$radio_choice(c("Yes", "No"), "No", comment=c("Yes"="Are the points basically falling on a straight line?")))`
+
+<!--- Finish this off -->
+```{r echo=FALSE, results="asis"}
+cat(nav$add("Grade", header=FALSE))
+cat(nav$write_footer())
+cat(page$grade_button())
+cat(page$write_footer())
+```

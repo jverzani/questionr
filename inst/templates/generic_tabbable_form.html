@@ -1,0 +1,109 @@
+<!-- a generic form. See also generic_tabbable_form -->
+
+
+<div class="page-header">
+<h2>{{{title}}}</h2>
+{{#small_title}}
+  <small>{{{small_title}}}</small>
+{{/small_title}}  
+</div>
+
+
+{{{instructs}}}
+
+{{^pills}}
+<ul class="nav nav-tabs">
+{{/pills}}
+{{#pills}}
+<ul class="nav nav-pills">
+{{/pills}}
+  
+{{#tabs}}
+  <li{{{class_active}}}><a href="#{{tab_id}}_tab" data-toggle="tab">{{label}}</a></li>
+{{/tabs}}
+</ul>
+
+<div class="tab-content">
+{{#tabs}}
+  <div class="tab-pane{{active}}" id="{{tab_id}}_tab">
+    <form class="form-horizontal{{#well}} well{{/well}}" id="{{tab_id}}">
+      <fieldset>
+{{#elements}}
+        <div class="control-group">
+          <label class="control-label" for="{{id}}">{{{label}}}</label>
+          <div class="controls">
+            {{{control}}}
+	    {{#help}}
+        	<p class="help-block">{{{help}}}</p>
+	    {{/help}}
+          </div>
+        </div>
+{{/elements}}    
+     </fieldset>
+    </form>
+  </div>
+{{/tabs}}
+</div>
+
+<script src="{{{bootstrap_base_url}}}/assets/js/bootstrap-typeahead.js"></script>
+<script src="{{{bootstrap_base_url}}}/assets/js/bootstrap-tab.js"></script>
+
+{{#submit_action}}
+<script>
+$("#{{form_id}}").submit(
+    {{{submit_action}}}
+    );
+</script>
+{{/submit_action}}    
+
+
+{{#set_value}}
+<script>    
+$(document).ready(function() {
+    {{^handler}}
+    var set_value=function(ID, key, value) {
+      call_rpc("{{OBJ}}", "set", {id:ID, x:value});
+     };
+    {{/handler}}
+    {{#handler}}
+    {{{handler}}}
+    {{/handler}}
+              
+$("[type=\'checkbox\']").each(function() {
+    this.onchange = function() {
+        var tab_id = $(this).parents("form").attr("id");
+        set_value(tab_id, this.id, this.checked);
+    }
+});
+
+$("[type=\'radio\']").each(function() {
+    this.onchange = function() {
+        var tab_id = $(this).parents("form").attr("id");
+        set_value(tab_id, this.name, this.value);
+    }
+});
+
+$("[type=\'text\']").each(function() {
+    this.onchange = function() {
+        set_value(this.id, this.value);
+    }
+});
+
+$("[type=\'date\']").each(function() {
+    this.onchange = function() {
+        var tab_id = $(this).parents("form").attr("id");
+        set_value(tab_id, this.id, this.value);
+    }
+});
+
+$("select").each(function() {
+    this.onchange = function() {
+        var tab_id = $(this).parents("form").attr("id");
+        set_value(tab_id, this.id, this.value);
+    }
+});
+
+    
+});
+</script>
+{{/set_value}}

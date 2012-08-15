@@ -1,0 +1,30 @@
+<table class="table table-condensed table-striped" id={{table_id}}>
+  <thead>
+    <tr>
+      <th></th>
+      {{#headers}}
+      <th>{{{label}}}</th>
+      {{/headers}}
+    </tr>
+  </thead>
+  <tbody>
+    {{#rows}}
+    <tr id="{{row_id}}">
+      <td><i class="icon-th"></i></td>
+      {{#cells}}
+      <td>{{{label}}}</td>
+      {{/cells}}
+    </tr>
+    {{/rows}}
+  </tbody>
+</table>
+
+{{#script}}
+<script>
+{{{script}}}
+</script>
+{{/script}}
+
+
+<script src="{{{static_url}}}/tablednd/jquery.tablednd.js"></script>
+<!-- add script via READY_SCRIPT -->

@@ -1,0 +1,51 @@
+<!-- give student chance to enroll in a section -->
+<script>
+var section_enroll_action = function () {
+  $.ajax({url:"{{{base_url}}}/section_enroll",
+          type:"POST",
+          data:{
+            section_direct:$("#section_direct").val(),
+            section_public:$("#section_public").val(),
+            section_private:$("#section_private").val()
+          },
+          dataType:"json",
+          success: function(data) {window.location.replace(data)}
+          });
+};
+</script>
+
+<h2>Enroll in a section:</h2>
+<p>
+Sections may be public or private. For public sections you are
+enrolled right away, for private ones your request must be permitted
+by the manager of the section.
+</p>
+<p>
+Sections may be selected below, or if you know the section ID you can
+enter it directly.
+</p>
+
+
+<form class="well">
+
+<div class="control-group">
+  <label class="control-label" for="section_direct">Section ID:</label>
+  <input type="text" class="input-xlarge" id="section_direct"  placeholder="Enter ID or select below" />
+</div>
+
+{{#sections}}
+<div class="control-group">
+  <label class="control-label" for="{{id}}">{{{label}}}</label>
+  <div class="controls">
+    <select class="input-xlarge" id="{{id}}">
+      {{#options}}
+      <option value='{{value}}'>{{{label}}}</option>
+	{{/options}}
+    </select>
+  </div>
+</div>
+{{/sections}}
+
+<input class="btn" type="button" value="Submit" onClick="section_enroll_action(this.form)">
+
+</form>

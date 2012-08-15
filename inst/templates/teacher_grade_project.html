@@ -1,0 +1,135 @@
+<script>
+var knit_hash = null;
+$.ajax({url:"http://beta.opencpu.org/R/pub/base/identity/save",
+        type:"POST",
+        data:{x:"function(x) {   f <- tempfile(fileext=\".Rmd\");   base <- tools:::file_path_sans_ext(f);   html_file <- sprintf(\"%s.html\", base);   md_file <- sprintf(\"%s.md\", base);   on.exit(unlink(paste(base, c(\".Rmd\", \".md\", \".html\"), sep=\"\"))); ;   cat(x, \"\\n\", file=f);   knitr:::knit(f, output=md_file);   markdown:::markdownToHTML(md_file, output=html_file, fragment.only=TRUE);   x <- paste(readLines(html_file), collapse=\"\\n\");   markdown:::.b64EncodeImages(x) }"
+             },
+        dataType:"json",
+        success:function(data) {knit_hash=data.object},
+        error:function(data) {alert("error")}
+       });
+
+
+
+
+var run_opencpu = function(id) {
+$.ajax({url:"http://beta.opencpu.org/R/tmp/" + knit_hash + "/json",
+        type:"POST",
+        data:{x:JSON.stringify(($("#" + id + "_answer").val()))},
+        dataType:"json",
+	success:function(data) {
+            x = data.toString();
+            console.log(x.replace(/(\r\n|\n|\r)/gm,""));
+	    $("#" + id + "_opencpu").empty();
+	    $("#" + id + "_opencpu").append("<div class=\"well\">" + x.replace(/(\r\n|\n|\r)/gm,"") + "</div>");
+	}
+       });
+};
+
+	    
+var submit_form = function() {
+    // check that all is graded	    
+    var all_done = true;
+    var to_grade=[];	    
+    $.each(new_grade, function(key, value) {
+	if(value.grade == null) {
+	    to_grade.push(key);
+	    all_done=false;
+	}
+    });
+    if(all_done) {
+	$.ajax({url:"{{{base_url}}}/teacher_save_grade",
+		type:"POST",
+		data:{student_id:"{{student_id}}",
+		      project_id:"{{project_id}}",
+		      section_id:"{{section_id}}",
+		      new_grades:JSON.stringify(new_grade)
+		     },
+		success:function(data) {
+		    function close_window() {
+			if (confirm("Close Window?")) {
+			    window.close();
+			}
+		    };
+		    close_window();
+		}
+	       });
+    }  else {
+	var msg = "<strong>Oh snap</strong> There are more to grade:" + to_grade.join(", ");
+	$("#alert_area").empty();
+	$("#alert_area").append('<div class="alert-block alert-info"><button class="close" data-dismiss="alert">×</button>' + msg + '</div>');
+	
+    }
+};
+
+
+</script>
+
+
+<div id="instructions"></div>
+
+	
+<div class="page-header">
+ {{{student_photo}}} <strong>{{{student_name}}}</strong>, <em>{{{project_name}}}</em> {{{section_name}}}
+</div>
+
+
+
+
+<blockquote>
+Submitted: {{{submit_date}}}{{#due_date}}, Due Date: {{{due_date}}} {{{days_late}}}{{/due_date}}
+</blockquote>
+
+
+<table class="table table-striped table-bordered">
+  <thead>
+    <tr>
+      <th>Question</th>
+      <th>Grade</th>
+      <th>Answer</th>
+    </tr>
+    </thead>
+  <tbody>
+    {{#answers}}
+    <tr>
+      <td id="{{question_no}}"><a href="{{{context_url}}}#{{question_no}}" onclick='window.open(this.href); return false;'>{{{question_no}}}<a></td>
+      <td>{{{grade}}}</td>
+      <td>{{{answer}}}</td>
+    </tr>
+    {{/answers}}
+  </tbody>
+</table>
+
+<div id="alert_area"></div>
+
+{{^student_grade}}
+<button class="btn" type="submit" onclick="submit_form();true">Submit</button>
+{{/student_grade}}
+{{#student_grade}}
+<strong>Student got a {{{student_grade}}}.<strong>
+<a  class="btn btn-primary" href="#" onclick="window.close();false"><i class="icon-remove icon-white"></i> dismiss</a>
+{{/student_grade}}
+
+<script>
+var new_grade = {{{new_grade}}};
+$(document).ready(function() {
+    $("[type=\'radio\']").each(function() {
+	this.onchange = function() {
+	    var key = this.name.replace("_grade", "");
+	    var grade = parseInt(this.value);
+	    new_grade[key].grade = grade;
+	}
+    });
+    $(".comment_area").each(function() {
+      var id = this.id;
+      var key = id.replace("_comment", "");
+      this.onchange = function() {
+	var val = $("textarea#" + id).val();
+	console.log(key);
+	console.log(val);
+	new_grade[key].comment = val;
+      }
+    });
+});
+</script>
+

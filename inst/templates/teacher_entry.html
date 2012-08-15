@@ -1,0 +1,46 @@
+<!-- teacher entry point -->
+
+
+
+
+{{{#messages}}}
+<div data-alertid="{{{id}}}" class="alert alert-block alert-{{{type}}}">
+  <button class="close" data-dismiss="alert">×</button>
+  <strong>{{{title}}}</strong> {{{msg}}}
+</div>
+{{{/messages}}}
+
+{{#has_pending}}
+<div data-alertid="XXX" class="alert alert-block alert-info">
+  <button class="close" data-dismiss="alert">×</button>
+  <strong>Attention:</strong> you have <a href="{{{base_url}}}/teacher_add_students">pending</a> student requests to enter a section.
+</div>
+{{/has_pending}}
+
+
+
+<div class="page-header">
+<h2>Section{{more_than_one_section}}:</h2>
+</div>
+
+<div id="instructions"></div>
+
+
+
+
+<div id="myTabs" class="tabbable">
+  <ul class="nav nav-tabs">
+    {{#sections}}
+    <li{{#active}} class="active"{{/active}}><a href="#{{section_id}}" data-toggle="tab">{{{section_name}}}</a></li>
+    {{/sections}}
+  </ul>
+  
+  <div class="tab-content">
+    {{#sections}}	
+    <div class="tab-pane{{#active}} active{{/active}}" id="{{section_id}}">
+      {{{stuff}}}
+    </div>
+    {{/sections}}
+  </div>
+</div>
+

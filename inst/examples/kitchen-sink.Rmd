@@ -1,0 +1,264 @@
+
+``` {r echo=FALSE, results="asis"}
+## Nothing to see here ... move along
+require("questionr", quietly=TRUE)
+page <- questionr:::Page$new()
+nav <- questionr:::NavBar$new()
+cat(page$write_header())
+```
+
+
+`r I(nav$write_header("The Kitchen Sink Example", "Shows off different elements of this R package"))`
+
+`r I(nav$add("About"))`
+
+This `R` package provides a simple enough means to write quizzes or
+homework-type assignments to be displayed on the web using the easy to
+learn `R markdown` format. This format makes integrating formatted
+text, `R` code, and `R` graphics as simple as possible.  A number of R
+functions are given to make the pages quiz-ready.  The `Twitter
+Bootstrap` CSS and JavaScript files are used for styling the pages, to
+given an attractive, modern look with _minimal_ fuss from the author.
+
+`r I(nav$add("Markup"))`
+
+The basic format for authoring is `R markdown`, This format that can
+be easily used from within `RStudio` -- where there is a very nice
+mode for interacting with such documents. However, it can also be
+authored with any text editor and processed from any `R` session using
+the `knitr` and `markdown` packages from CRAN.
+
+
+There are few function calls from this package that are incorporated
+to make an interactive page.
+
+The main one is to create a new reference class instance (`page`
+below) via a call:
+
+    ```{r echo=FALSE, results="asis"}
+    page <- questionr:::Page$new()
+    nav <- questionr:::NavBar$new()
+    cat(page$write_header())
+    cat(nav$write_header())
+    ```
+
+
+As seen, this is wrapped inside an R block with `echo=FALSE,
+results="asis"` specified.
+
+
+
+(An R block is a triple backtick block with the `{r}` bit added. We
+also use inline R calls. For blocks, the "asis" is important as the function return a mix of HTML and JavaScript. For inline code, one must wrap the function within an `I()` to avoid the processing of the text into HTML readable format.)
+
+The navigation bit is optional, but adds quite a bit for no real cost.
+
+New problems are created using inline notation with various problem calls, as with
+
+<code></pre>
+&#96;r I(page$radio_choice(x, value, hint, ...))&#96;
+</pre></code>
+
+There are other problem types, the above syntax will produce an HTML
+snippet to offer the user a selection from a list of items using radio
+buttons.
+
+The page is finished by selecting a button for grading (locally, or
+with a server) and closing the (optional) navigation tags and writing
+the footer for the page:
+
+    ```{r echo=FALSE, results=TRUE}   
+    cat(nav$write_footer())
+    cat(grade_button())
+    cat(page$write_footer())
+    ```
+
+
+
+`r I(nav$add("Navigation"))`
+
+At the top of the page, the black navigation bar and its links are for
+navigation. They come from the methods `write_header`, `add`, and
+`write_footer` of a `NavBar` object. The `add` method simply places an
+anchor in the file and adds a menu item to the navigation bar. By
+default, it will also write a section header to the file, though this
+can be suppressed.
+
+
+
+`r I(nav$add("Problem types", "Types of problems that we can do"))`
+
+These are the main problem types:
+
+`r I(label("Numeric choice"))` A `numeric_choice` allows the user to
+enter a number. One specifies an upper and lower bound on acceptable
+numbers:
+
+`r I(page$numeric_choice(exp(1), pi,  comment=list(less="A little low", more="A little high"),hint="Between e and pi"))`
+
+`r I(label("Radio choice"))` A `radio_choice` offers the user radio
+buttons to select a value from:
+
+`r I(page$radio_choice(state.name[1:4], state.name[1], comment=list("Alaska"="I can see Russia from there, but it is not the right answer."), hint="first one"))`
+
+
+`r I(label("Checkbox group choice"))` A `checkgroup_choice` is
+similar, though a user can select one or more answer
+
+`r I(page$checkgroup_choice(state.name[1:4], state.name[1], hint="first one"))`
+
+
+`r I(label("Combobox choice"))` A `combobox_choice` is similar to the
+radio, though allows for many more choices in a more compact manner:
+
+`r I(page$combobox_choice(state.name, state.name[1], hint="first one"))`
+
+`r I(label("Typeahead choice"))` A `typeahead_choice` is similar to
+the combobox, but the items to choose from aren't shown initially, but
+rather only in narrowed form after the user has started typing.
+
+
+`r I(page$typeahead_choice(state.name, state.name[1], hint="Sweet home ..."))`
+
+Problems can include hints and problems can have comments specified
+for predictable mistakes. The `hint` and `comment` arguments are used for these.
+
+
+`r I(nav$add("Other markup", "some extra features provided by Bootstrap"))`
+
+We use the wonderful `Bootstrap` CSS and JavaScript libraries provided
+by twitter (http://twitter.github.com/bootstrap/index.html). These
+libraries provide many great classes for styling a page and some
+JavaScript libraries for adding dynamic features. One can incorporate
+raw HTML within a `R markdown` page and this markup can include the
+classes provided by `Bootstrap`. This allows one to use the libraries
+directly.
+
+`r I(alert("Warning", "The markdown package uses the sundown package for converting markdown format to HTML. This conversion handles the embedded R code within block-level tags (e.g. a 'div' tag) in such a way that the R code is not displayed as desired. Sometimes, wrapping within a 'span' tag will prevent this."))`
+
+This `R` package provides a few convenience functions to access a
+sliver of the Bootstrap functionality:
+
+<h3>Tabs</h3>
+
+By default, the components are all laid out vertically, making for
+long pages. Using tabs we can break this up by only disclosing parts
+of the page that a user requests through clicking on a tab. 
+
+There can be more than one tabbed area per page, so we need to create
+a separate `Tabs` instance for each and then add to the page. The main methods are
+`write_header`, `write_footer`, and `add`. The first two wrap the
+content to be placed in the tabs, the latter creates the pages.
+
+A basic structure looks like
+
+    ```{r echo=FALSE, results="asis"}
+    tabs <- questionr:::Tabs$new()
+    cat(tabs$write_header())
+    ```
+
+Then to add a tab, we have
+
+<code><pre>
+&#96;r I(tabs$add("New tab"))&#96;
+</pre></code>
+
+And after finishing specifying the tabs, one writes a footer:
+    
+<code><pre>
+&#96;r I(tabs$write_footer())&#96;
+</pre></code>
+
+In this example we use tabs to show a linear model and a diagnostic
+plot.
+
+```{r echo=FALSE,results="asis"}
+tabs <- questionr:::Tabs$new()
+cat(tabs$write_header())
+```
+
+`r I(tabs$add("The model"))`
+
+```{r}
+res <- lm(mpg ~ wt, mtcars)
+summary(res)
+```
+
+`r I(tabs$add("Diagnostic plot"))`
+
+```{r}
+plot(res, which=1)
+```
+
+`r I(tabs$write_footer())`
+
+
+<h3>Some markup</h3>
+
+There are various conveniences to access `Bootstrap`'s excellent CSS
+styling. One can make labels with `label`: `r I(label("some warning
+label", type="warning"))`.
+
+<br />
+
+A "badge" is somewhat familiar to Apple users. The `badge` function does so: `r I(badge("pi", type="warning"))`.
+
+<br />
+
+Alerts are dismissible areas to display a message. They are made with
+the `alert` function.
+
+`r I(alert("Whoa Nelly!", "This is some alert message"))`
+
+
+`r I(nav$add("Graphics"))`
+
+Inserting graphics into a document is dead simple with `R
+markdown`. The `knitr` package handles the production of the graphics,
+and `markdown` embed the graphic directly into the HTML file so there
+is no fuss with hosting of graphics.
+
+```{r echo=FALSE, results="asis"}
+tabs <- questionr:::Tabs$new()
+cat(tabs$write_header())
+cat(tabs$add("Basic"))
+```
+
+    ``` {r}
+    ## a basic graphic is just done within the triple-backtick block:
+    hist(rnorm(100))
+    ```
+
+```{r echo=FALSE}
+hist(rnorm(100))
+```
+
+`r I(tabs$add("Google graphics"))`
+
+The `googleVis` package integrates R with Google's visualization
+API. As with the basic graphics, all the necessary code to display the
+graph is contained in the one HTML file, making it easy to
+upload/mail/host these pages.
+
+```{r results="asis"}
+suppressPackageStartupMessages(library(googleVis))
+T <- gvisTable(Exports, options = list(width = 200, height = 280))
+G <- gvisGeoChart(Exports, locationvar = "Country", colorvar = "Profit", 
+    options = list(width = 360, height = 280, dataMode = "regions"))
+TG <- gvisMerge(T, G, horizontal = TRUE, tableOptions = "bgcolor=\"#CCCCCC\" cellspacing=10")
+
+print(TG, "chart")
+```
+
+
+
+`r I(tabs$write_footer())`
+
+
+<!--- Finish this off -->
+
+`r I(nav$write_footer())`
+
+`r I(page$grade_button())`
+
+`r I(page$write_footer())`

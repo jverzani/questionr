@@ -1,0 +1,59 @@
+<!-- student entry point -->
+
+{{{#messages}}}
+<div id={{{id}}} class="alert alert-block{{#type}} alert-{{type}}{{/type}}">
+  <button class="close" data-dismiss="alert">×</button>
+  <strong>({{{date}}}) {{{title}}}</strong> {{{msg}}}
+</div>
+{{{/messages}}}
+
+
+
+<h2>Assignments:</h2>
+<div class="tabbable">
+  <ul class="nav nav-tabs">
+    {{#sections}}
+    <li{{#active}} class="active"{{/active}}><a href="#{{section_id}}" data-toggle="tab">{{{section_name}}}</a></li>
+    {{/sections}}
+  </ul>
+  
+  <div class="tab-content">
+    {{#sections}}	
+    <div class="tab-pane{{#active}} active{{/active}}" id="{{section_id}}">
+      <table class="table table-striped table-bordered">
+	<thead>
+	  <tr>
+	    <th>Assignment</th>
+	    <th>Due</th>
+	    <th>Status</th>
+	  </tr>
+	</thead>
+        <tbody>
+	  {{#section_data}}
+	  <tr>
+	    <td>{{{project_name}}}</td>
+	    <td>{{{project_due}}}</td>
+	    <td>{{{project_status}}}</td>
+	  </tr>
+	  {{/section_data}}
+	</tbody>
+      </table>
+    </div>
+    {{/sections}}
+  </div>
+</div>
+<!-- end sections -->
+
+
+<script>
+$(document).ready(function() {
+
+  $("#student_entry").tab("show");
+  $(".alert").alert();
+  $(".alert").bind("closed", function () {
+    $.ajax({type:"post",url:"{{{base_url}}}/delete_message", data:{id:this.id} });
+  });
+
+
+})
+</script>

@@ -1,0 +1,217 @@
+<h2>Edit sections:</h2>
+<div class="tabbable">
+  <ul class="nav nav-tabs" id="section_tabs">
+    
+    {{#sections}}
+    <li{{{active_class}}}><a href="#{{section_id}}" data-toggle="tab">{{{section_name}}}</a></li>
+    {{/sections}}
+    
+  </ul>
+  
+  <div class="tab-content">
+    {{#sections}}	
+    <div class="tab-pane{{active}}" id="{{section_id}}">
+      <form class="form-horizontal">
+        <fieldset>
+        <legend>{{{section_description}}}</legend>
+
+        <div class="control-group">
+	  <label class="control-label" for="project_list">Projects</label>
+           <div class="controls">
+	     <table class="table">
+	       <thead>
+		 <tr>
+		   <th>Name</th>
+		   <th>Due date</th>
+		 </tr>
+		 </thead>
+	       <tbody>
+		 {{#projects}}
+		 <tr>
+		   <td>{{{project_name}}}</td>
+		   <td><input type="text" class="input-xlarge due_date" id="{{project_id}}_due_date" value={{project_due_date}}></td>
+		 </tr>
+		 {{/projects}}
+
+		 </tr>
+	       </tbody>
+	     </table>
+	   </div>
+	 </div>
+
+
+	 </fieldset>
+	 </form>
+
+    <form class="form-horizontal"
+	 id="fileupload"
+	 action="{{{base_url}}}/teacher_add_project/{{section_id}}"
+	 method="POST"
+	 enctype="multipart/form-data"
+	  >
+	 <fieldset>
+	  <div class="control-group">
+	  <label class="control-label">Add project 	    &nbsp;&nbsp;&nbsp;
+</label>
+	  <div class="controls">
+            <div class="row fileupload-buttonbar">
+	      
+
+              <span class="btn btn-success fileinput-button">
+                 <i class="icon-plus icon-white"></i>
+                 <span>Add file...</span>
+                 <input type="file" name="files[]" multiple> 
+              </span>
+
+	      <button type="submit" class="btn btn-primary start">
+	        <i class="icon-upload icon-white"></i>
+	        <span>Start upload</span>
+	      </button>
+
+	      <button type="reset" class="btn btn-warning cancel">
+	        <i class="icon-ban-circle icon-white"></i>
+	        <span>Cancel upload</span>
+	      </button>
+
+
+	      <button type="refresh" class="btn btn-warning cancel"
+	        onclick="window.open('{{{base_url}}}/teacher_edit_sections/{{section_id}}', name='_parent');false"
+	      >
+	        <i class="icon-refresh icon-white"></i>
+	        <span>Refresh listing</span>
+	      </button>
+
+	    </div>
+	    <!-- The global progress information -->
+	    <!-- The loading indicator is shown during file processing -->
+	    <div class="fileupload-loading"></div>
+	    <!-- The table listing the files available for upload/download -->
+	    <table role="presentation" class="table table-striped">
+	      <tbody class="files">
+	      </tbody>
+	    </table>
+	  </div>
+	</div>
+      </fieldset>
+    </form>
+	       
+	       <form class="form-horizontal">
+	       <fieldset>
+	       
+
+	<div class="control-group">
+	  <div class="controls">
+	    <hr />
+	  </div>
+	</div>
+	
+	
+       <div class="control-group">
+	  <label class="control-label" for="public_section">Public</label>
+	  <div class="controls">
+            <input type="checkbox" id="public_section" {{public}} value="true">
+	    <p class="help-block">Make section public</p>
+	  </div>
+        </div>
+
+      <div class="control-group">
+	 <label class="control-label" for="close_section">Close</label>
+	 <div class="controls">
+           <input type="checkbox" id="close_section" value="true">
+	   <p class="help-block">Close down this section</p>
+	</div>
+      </div>
+
+	
+      </fieldset>
+      </form>
+
+
+      
+    </div>
+    {{/sections}}
+
+  </div>
+</div>
+
+<!-- The template to display files available for upload -->
+<script id="template-upload" type="text/x-tmpl">
+alert("is valid?" + o.files.valid);
+{% for (var i=0, file; file=o.files[i]; i++) { %}
+    <tr class="template-upload fade">
+        <td class="preview"><span class="fade"></span></td>
+        <td class="name"><span>{%=file.name%}</span></td>
+        <td class="size"><span>{%=o.formatFileSize(file.size)%}</span></td>
+        {% if (file.error) { %}
+            <td class="error" colspan="2"><span class="label label-important">{%=locale.fileupload.error%}</span> {%=locale.fileupload.errors[file.error] || file.error%}</td>
+        {% } else if (o.files.valid && !i) { %}
+            <td>
+	       <div class="progress progress-success progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar" style="width:0%;"></div></div>
+            </td>
+            <td class="start">{% if (!o.options.autoUpload) { %}
+                <button class="btn btn-primary">
+                    <i class="icon-upload icon-white"></i>
+                    <span>{%=locale.fileupload.start%}</span>
+                </button>
+            {% } %}</td>
+        {% } else { %}
+            <td colspan="2"></td>
+        {% } %}
+        <td class="cancel">{% if (!i) { %}
+            <button class="btn btn-warning">
+                <i class="icon-ban-circle icon-white"></i>
+                <span>{%=locale.fileupload.cancel%}</span>
+            </button>
+        {% } %}</td>
+    </tr>
+{% } %}
+</script>
+<!-- The template to display files available for download -->
+<script id="template-download" type="text/x-tmpl">
+{% for (var i=0, file; file=o.files[i]; i++) { %}
+    <tr class="template-download fade">
+        {% if (file.error) { %}
+            <td></td>
+            <td class="name"><span>{%=file.name%}</span></td>
+            <td class="size"><span>{%=o.formatFileSize(file.size)%}</span></td>
+            <td class="error" colspan="2"><span class="label label-important">{%=locale.fileupload.error%}</span> {%=locale.fileupload.errors[file.error] || file.error%}</td>
+        {% } else { %}
+            <td class="preview">{% if (file.thumbnail_url) { %}
+	      <i class="{%=file.thumbnail_url%}"></i>
+            {% } %}
+	    </td>
+            <td class="name">
+                {%=file.name%}
+            </td>
+            <td class="size"><span>{%=o.formatFileSize(file.size)%}</span></td>
+            <td colspan="2"></td>
+        {% } %}
+        <td class="delete">
+        </td>
+    </tr>
+{% } %}
+</script>
+
+
+    <!-- The jQuery UI widget factory, can be omitted if jQuery UI is already included -->
+<script src="{{{static_url}}}/blueimp/js/vendor/jquery.ui.widget.js"></script>
+
+<!-- The Templates plugin is included to render the upload/download listings -->
+<script src="http://blueimp.github.com/JavaScript-Templates/tmpl.min.js"></script>
+<!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
+
+<!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
+<script src="{{{static_url}}}/blueimp/js/jquery.iframe-transport.js"></script>
+<!-- The basic File Upload plugin -->
+<script src="{{{static_url}}}/blueimp/js/jquery.fileupload.js"></script>
+<!-- The File Upload file processing plugin -->
+<script src="{{{static_url}}}/blueimp/js/jquery.fileupload-fp.js"></script>
+<!-- The File Upload user interface plugin -->
+<script src="{{{static_url}}}/blueimp/js/jquery.fileupload-ui.js"></script>
+<!-- The localization script -->
+<script src="{{{static_url}}}/blueimp/js/locale.js"></script>
+<!-- The main application script -->
+<script src="{{{static_url}}}/blueimp/js/main.js"></script>
+<!-- The XDomainRequest Transport is included for cross-domain file deletion for IE8+ -->
+<!--[if gte IE 8]><script src="{{{static_url}}}/blueimp/js/cors/jquery.xdr-transport.js"></script><![endif]-->
+

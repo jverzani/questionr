@@ -1,0 +1,262 @@
+<!-- edit classes -->
+
+
+<div class="page-header">
+  <h2>Edit classes</h2>
+</div>
+
+
+<div id="instructions"></div>
+
+<ul class="nav nav-tabs" id="myTab">
+  {{#classes}}
+    <li{{#active}} class="active"{{/active}}><a href="#{{{class_id}}}_tab">{{{label}}}</a></li>
+  {{/classes}}
+    <li{{#new_class_active}} class="active"{{/new_class_active}}><a href="#new_class_tab">New class ...</a></li>
+</ul>
+ 
+<div class="tab-content">
+  {{#classes}}
+    <div class="tab-pane{{#active}} active{{/active}}" id="{{class_id}}_tab">
+      <h4>Projects</h4>
+      <table class="table table-condensed table-striped dndtable" id={{class_id}}>
+	<thead>
+	  <tr>
+	    <th></th>
+	    <th>Name</th>
+	    <th>Public</th>
+	    <th>Keywords</th>
+	    <th>Actions</th>
+	  </tr>
+	  </thead>
+	<tbody>
+	  {{#rows}}
+	  <tr id="{{project_id}}">
+	    <td><i class="icon-th"></i></td>
+	    {{#cells}}
+	    <td>{{{label}}}</td>
+	    {{/cells}}
+
+	    <td> <!-- actions -->
+	      <a href='{{{base_url}}}/teacher_view_project?project_id={{project_id}}' target='_blank' >
+	      <i class='icon-file'></i> view</a>
+	      &nbsp;
+	      
+	      <a href='{{{base_url}}}/teacher_edit_project?project_id={{project_id}}' target='_blank'><i class='icon-edit'></i> edit</a>
+	      &nbsp;
+
+	      	      
+	      <a href='#' onclick='delete_class("{{class_id}}", "{{project_id}}", "{{owner}}");true'><i class='icon-trash'></i> delete</a>
+
+	      &nbsp;
+	      
+	      <form class="form-horizontal fileupload"
+	      action="{{{base_url}}}/rpc"
+	        data-projectid="{{{project_id}}}"
+	        data-classid="{{{class_id}}}"
+	        method="POST"
+	        enctype="multipart/form-data"
+	        >
+	      <span class="btn btn-success fileinput-button">
+	      <i class="icon-refresh icon-white"></i>
+	      <span>Replace file...</span>
+	      <input type="file" name="files[]"> 
+	      </span>
+	      </form>
+	      
+	      
+	    </td>
+	    
+	  </tr>
+	  {{/rows}}
+	</tbody>
+      </table>
+      
+      <div class="btn-group">
+      <form class="form-horizontal fileupload"
+	      action="{{{base_url}}}/rpc"
+	        data-classid="{{{class_id}}}"
+	        method="POST"
+	        enctype="multipart/form-data"
+	        >
+	      <span class="btn btn-success fileinput-button">
+	      <i class="icon-plus icon-white"></i>
+	      <span>Add new project...</span>
+	      <input type="file" name="files[]"> 
+	      </span>
+      </form>
+      </div>
+      <hr />
+
+      <h4>Edit class properties</h4>
+<div class="well form-horizontal">
+  <fieldset>
+
+    <div class="control-group">
+      <label class="control-label" for="">Name</label>
+      <div class="controls">
+      <input type="text" value="{{{label}}}" onchange="set_class_prop('name', '{{class_id}}', $(this).val())"/>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <label class="control-label" for="}">School</label>
+      <div class="controls">
+      <input type="text" value="{{{school}}}" onchange="set_class_prop('school', '{{class_id}}', $(this).val())"/>	      </div>
+    </div>
+
+    <div class="control-group">
+      <label class="control-label" for="}">Public</label>
+      <div class="controls">
+	<input type="checkbox" {{#public}}checked{{/public}}/>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <label class="control-label" for="}">Delete</label>
+      <div class="controls">
+	<button class="btn  btn-warning" onclick="if(confirm('Really? This can\'t be reversed.')) delete_class('{{class_id}}')"><i class="icon-remove icon-white"></i>&nbsp; Delete class...</button>
+      </div>
+    </div>
+
+  </fieldset>
+</div>
+
+      
+      </div>
+    {{/classes}}
+   <div class="tab-pane{{#new_class_active}} active{{/new_class_active}}" id="new_class_tab">
+     {{{NEW_CLASS_FORM}}}
+   <div>  
+</div>
+
+
+	    
+    
+<script src="{{{bootstrap_base_url}}}/assets/js/bootstrap-tab.js"></script>
+<script src="{{{static_url}}}/tablednd/jquery.tablednd.js"></script>
+
+<script src="{{{static_url}}}/blueimp/js/vendor/jquery.ui.widget.js"></script>
+<script src="http://blueimp.github.com/JavaScript-Templates/tmpl.min.js"></script>
+<script src="{{{static_url}}}/blueimp/js/jquery.iframe-transport.js"></script>
+<script src="{{{static_url}}}/blueimp/js/jquery.fileupload.js"></script>
+<!--[if gte IE 8]><script src="{{{static_url}}}/blueimp/js/cors/jquery.xdr-transport.js"></script><![endif]-->
+
+
+<script>
+var set_class_prop = function(prop, class_id, value) {
+      var params = {class_id:class_id, value:value};
+      call_rpc("class", "set_" + prop, params);
+}
+var delete_class = function(class_id) {
+      var params = {class_id:class_id, value:value};
+      var success = function(data) {window.location.replace("{{base_url}}/edit_classes")};
+      call_rpc("class", "delete_class", params, success);
+}
+</script>      
+      
+<script>
+var delete_class = function(class_id, project, owner) {
+  var resp = confirm('Really delete this resource');
+  if(resp == true) {
+    var params = {class_id:class_id, project_id:project};
+    var success = function(data) {window.location.replace("{{base_url}}/edit_classes?class_id=" + class_id);}
+    call_rpc("class", "delete_project", params, success);
+    }
+};
+</script>
+    
+<script>
+$(document).ready(function () {
+  $('#myTab a').click(function (e) {
+    e.preventDefault();
+    $(this).tab('show');
+  });
+})
+</script>
+<script>
+$(document).ready(function() {
+$("input[id$='name']").each(function() {
+    var base_url = "{{{base_url}}}";
+    var project_id = $(this).parents("tr").attr("id");
+    this.onchange=function() {
+       var params = {
+                     project_id:project_id,
+			value:$(this).val()
+		    };
+       call_rpc("project", "set_name", params);
+    }
+});
+
+
+$("input[id$='public']").each(function() {
+    var base_url = "{{{base_url}}}";
+    var project_id = $(this).parents("tr").attr("id");
+    this.onchange=function() {
+        var params = {
+			project_id:project_id,
+			value: this.checked
+		    };
+        call_rpc("project", "set_public", params);
+       
+    }
+});
+
+$("input[id$='keywords']").each(function() {
+    var base_url = "{{{base_url}}}";
+    var project_id = $(this).parents("tr").attr("id");
+    this.onchange=function() {
+        var params = {
+			project_id:project_id,
+			value:$(this).val()
+		    };
+        call_rpc("project", "set_keywords", params)
+    }
+});
+})
+</script>
+
+<script>
+$(document).ready(function() {
+$('.fileupload').fileupload({
+        dataType: 'json',
+        add: function (e, data) {
+
+        data.formData = {obj:"class", method:"upload_project", id:'1',
+                         project_id:$(this).attr("data-projectid"),
+                         params:JSON.stringify({
+                           class_id:$(this).attr("data-classid"),
+                           project_id:$(this).attr("data-projectid")
+                           })
+                         }
+//data.context = $('<p/>').text('Uploading...').appendTo(document.body);
+            data.submit();
+        },
+        done: function (e, data) {
+          if(typeof(data.projectid) == "undefined") {
+            window.location.replace("{{base_url}}/edit_classes?class_id=" + data.classid);
+          };
+        },
+        error: function(e, data) {
+          alert("error with the upload");
+        }
+    });
+})
+</script>
+
+<script>
+$(document).ready(function() {
+$(".dndtable").tableDnD({
+  onDragClass:"dragging",
+  onDrop: function(table, row) {
+    var class_id = table.id;
+    var new_order = [];
+    var rows = table.tBodies[0].rows;
+    $(rows).each(function() {new_order.push(this.id)});
+    var params = {class_id:class_id, new_order:new_order};
+    call_rpc("class", "rearrange_project_order", params);
+  }
+});
+})
+</script>
+

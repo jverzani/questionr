@@ -1,0 +1,34 @@
+<div class="page-header">
+  <h1>Select one of your current sections:</h1>
+  <small>Old sections are not available for editing</small>
+</div>
+
+
+<table>
+  <thead>
+    <tr>
+      <th>Class</th>
+      <th>Section</th>
+    </tr>
+  </thead>
+  <tbody>
+{{#avail_sections}}
+    <td>{{{class}}}</td>
+    <td><a href={{{base_url}}}/teacher?section={{section_id}}>{{{section_name}}}</a></td>
+{{/avail_sections}}
+    <tr>
+      <td>…</td>
+      <td>…</td>
+    </tr>
+  </tbody>
+</table>
+
+<form class="well">
+  <label>Section</label>
+  <input type="text" class="span3" placeholder="Type something…">
+  <span class="help-block">Example block-level help text here.</span>
+  <label class="checkbox">
+    <input type="checkbox"> Check me out
+  </label>
+  <button type="submit" class="btn">Submit</button>
+</form>

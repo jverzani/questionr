@@ -1,0 +1,54 @@
+      </div>
+    </div>
+  </div>
+  <footer class="footer">
+    {{{FOOTER}}}
+  </footer>
+
+
+<script src="{{{bootstrap_base_url}}}/assets/js/bootstrap-typeahead.js"></script>
+<script src="{{{bootstrap_base_url}}}/assets/js/bootstrap-alert.js"></script>
+<script src="{{{bootstrap_base_url}}}/assets/js/bootstrap-tab.js"></script>
+
+<link href="{{{static_url}}}/gritter/css/jquery.gritter.css" rel="stylesheet">
+<script src="{{{static_url}}}/gritter/js/jquery.gritter.min.js"></script>
+  
+{{#LOAD_JS_LIBRARIES}}
+<script src="{{{url}}}"></script>
+{{/LOAD_JS_LIBRARIES}}  
+
+
+<script>
+  
+var call_rpc=function(obj, method, params, success) {
+    if(typeof(params) == "undefined") params = {};
+    if(typeof(success) == "undefined") success = function() {};
+    var data = {obj:obj, method:method, id:"1", params:params};
+    $.ajax({url: "{{{base_url}}}/rpc",
+            type:"POST",
+	    contentType:"application/json",
+	    data:JSON.stringify(data),
+	    success:success,
+	    error:function(data) {console.log(data)}
+	   });
+}
+
+</script>  
+<script>
+  $(document).ready(function() {
+$(".typeahead").typeahead();
+  });
+</script>
+
+
+{{#READY_SCRIPT}}
+<script>
+$(document).ready(function() { 
+{{{READY_SCRIPT}}}
+});
+</script>
+{{/READY_SCRIPT}}  
+
+  
+  </body>
+</html>

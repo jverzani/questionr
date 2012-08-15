@@ -1,0 +1,16 @@
+<!-- template for left panel for a user -->
+
+<div class="well">
+{{{photo}}} <b>{{{name}}}</b> <br />
+
+  <ul class="nav nav-list">
+    <li class="nav-header">
+      Actions:
+    </li>
+    {{#options}}
+    <li>
+       <a href="{{{base_url}}}/{{url}}" id="{{{url}}}">{{{label}}}</a>
+    </li>
+    {{/options}}
+  </ul>
+</div>

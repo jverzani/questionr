@@ -1,0 +1,55 @@
+
+// grader
+function grade_radio(ans, value) {return(ans == value)};
+function grade_checkboxgroup(ans, value) {
+  var out=[];
+  $.each(ans, function(key, value) { if(value != null) { out.push(value) }});
+  if(out.length != value.length) { return(false) };
+  out = out.sort();
+  var value = value.sort()
+  for(var i=0; i < out.length; i++) {
+    if(out[i] != value[i]) { return(false) }
+  }
+  return(true)
+};
+function grade_typeahead(ans, value) { return(ans == value)};
+function grade_combo(ans, value) { return(ans == value) };
+function grade_numeric(ans, value) { return(ans >= value[0] && ans <= value[1]) };
+
+function grade_problems() {
+    var grade;
+    var ans = [];
+    var cmt_defaults={correct:comments.correct, 
+		      incorrect:comments.incorrect,
+		      missing:comments.missing
+		     };	
+
+    var tmp = $.each(actual_answers, function(key, value) {
+	var answer = "";
+	var remark = "";
+	if(student_answers[key] == null) {
+	    answer = "missing";
+	    remark = comments.missing;
+	} else {
+	    if(value.type == "radio") {
+		answer = grade_radio(student_answers[key], value.value);
+		remark = comment_default(answer, student_answers[key], comments[key], cmt_defaults); 
+	    } else if(value.type == "checkgroup") {
+		answer = grade_checkboxgroup(student_answers[key], value.value);
+		remark = comment_checkgroup(answer, student_answers[key], comments[key], cmt_defaults); 
+	    } else if(value.type == "typeahead") {
+		answer = grade_typeahead(student_answers[key], value.value);
+		remark = comment_default(answer, student_answers[key], comments[key], cmt_defaults); 
+	    } else if(value.type == "combobox") {
+		answer = grade_combo(student_answers[key], value.value);
+		remark = comment_default(answer, student_answers[key], comments[key], cmt_defaults); 
+	    } else if(value.type == "numeric") {
+		answer = grade_numeric(student_answers[key], value.value);
+		remark = comment_numeric(answer, student_answers[key], value.value, comments[key], cmt_defaults); 
+	    }
+	}
+	ans.push({problem:key, answer:answer, comment:remark});
+	    
+    })
+	return(ans);
+};

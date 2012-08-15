@@ -1,0 +1,50 @@
+``` {r echo=FALSE, results="asis"}
+## Nothing to see here ... move along
+require("questionr", quietly=TRUE)
+page <- questionr:::Page$new()
+nav <- questionr:::NavBar$new()
+cat(page$write_header())
+```
+`r I(nav$write_header("Setting up the server", ""))`
+
+`r I(nav$add("About"))`
+
+The package runs under the `Rook` package for now and nothing else. 
+
+`r I(nav$add("Configure"))`
+
+The following needs to be configured:
+
+* the `janrain.com` API key must be requested and put into the configuration file
+
+
+
+
+* The configuration file default is in the `rook` subdirectory. This should be moved to some convenient place. One should edit the defaults.
+
+
+```r
+file.copy(system.file("servers", "rook", "config.dcf", package="questionr"), "somespot"
+```
+
+
+* The `Rook.sh` should be moved and edited to reflect the new location of the configuration file. 
+
+```r
+file.copy(system.file("servers", "rook", "Rook.sh", package="questionr"), "somespot"
+```
+
+
+Once all that is done, one starts the server by calling `Rook.sh`
+
+`r I(nav$add("Reverse Proxy"))`
+
+One can expose Rook to the wider world or use a reverse proxy to call
+Rook internally. The Apache web server makes it fairly easy to set up
+a reverse proxy. One benefit is this allows you to avoid the `custom`
+part of the url.
+
+<!--- Finish this off -->
+
+`r I(nav$write_footer())`
+`r I(page$write_footer())`

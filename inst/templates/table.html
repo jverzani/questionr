@@ -1,0 +1,25 @@
+<table class="table table-condensed table-striped" id={{table_id}}>
+  <thead>
+    <tr>
+      {{#headers}}
+      <th>{{{label}}}</th>
+      {{/headers}}
+    </tr>
+  </thead>
+  <tbody>
+    {{#rows}}
+    <tr {{#row_id}}id="{{row_id}}"{{/row_id}}>
+      {{#cells}}
+      <td>{{{label}}}</td>
+      {{/cells}}
+    </tr>
+    {{/rows}}
+  </tbody>
+</table>
+
+{{#script}}
+<script>
+{{{script}}}
+</script>
+{{/script}}
+

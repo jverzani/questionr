@@ -1,0 +1,39 @@
+<script>
+var save_file = function() {
+   call_rpc("project", "update_project_text",
+             {
+              project_id:"{{{project_id}}}",
+              new_text:ace.edit("editor").getValue()
+            },
+             function(data) {if(confirm('Close window?')) window.close()})
+};
+</script>
+
+{{#description}}<h3>{{{description}}}</h3>{{/description}}
+
+<div class="btn-group">
+  <a class="btn btn-primary" href="#" onclick="save_file();false">
+  <i class="icon-upload icon-white"></i><span>Save<span>
+  </a>
+
+  <a class="btn btn-primary" href="#" onclick="window.close();false">
+  <i class="icon-remove icon-white"></i><span>Cancel<span>
+  </a>
+</div>  
+
+<div id="editor" style="position: absolute;width: 800px;height: 480px;"><textarea>{{{text}}}</textarea></div>
+
+<script src="{{{static_url}}}/ace-builds/src/ace.js" type="text/javascript" charset="utf-8"></script>
+
+<script src="{{{static_url}}}/ace-builds/src/mode-markdown.js" type="text/javascript" charset="utf-8"></script>
+
+<script src="{{{static_url}}}/ace-builds/src/theme-twilight.js" type="text/javascript" charset="utf-8"></script>
+
+<script>
+$(document).ready(function() {
+  var editor = ace.edit("editor");
+//editor.setTheme("ace/theme/twilight");
+  var JavaScriptMode = require("ace/mode/markdown").Mode;
+  editor.getSession().setMode(new JavaScriptMode());
+});
+</script>

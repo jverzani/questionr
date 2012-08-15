@@ -1,0 +1,8 @@
+BRANDING: <h1>logo name<small>&nbsp;Some branding content to go here</small></h1>
+PAGE_TITLE_DEFAULT: questionr
+base_url: http://localhost:9000/custom/quizr
+static_url: http://localhost:9000/custom/quizr_static
+bootstrap_base_url: http://twitter.github.com/bootstrap
+table_dir: /Users/verzani/tmp/quizr
+base_project_dir: /Users/verzani/tmp/quizr/project_files
+API_key: b22d3e56d05a456a81fbdc4d978c0b9b1831cfeb

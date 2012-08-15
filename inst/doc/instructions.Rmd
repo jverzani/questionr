@@ -1,0 +1,354 @@
+``` {r echo=FALSE, results="asis"}
+## Nothing to see here ... move along
+require("questionr", quietly=TRUE)
+page <- questionr:::Page$new()
+nav <- questionr:::NavBar$new()
+cat(page$write_header())
+```
+`r I(nav$write_header("Writing a project", "Writing a project"))`
+
+`r I(nav$add("About"))`
+
+The `questionr` package allows one to write projects containing
+questions that can be self grading or graded by an instructor. The
+projects display as one long web page with the possibility of a top
+navigation bar to aid in navigation.
+
+Self-grading questions can be written to 
+
+* have a hint
+
+* give comments on incorrect answers
+
+* have a badge to record the number of tries a student makes per question.
+
+
+`r I(nav$add("The basic template"))`
+
+The markup is done using `R-markdown`. The package requires some
+minimal header and footer content. The most minimal would be to put
+the following lines in an `AsIs` header:
+
+<pre>
+&#96;&#96;&#96;{r echo=FALSE, results="asis"}
+## Nothing to see here ... move along
+require("questionr", quietly=TRUE)
+page <- questionr:::Page$new()
+cat(page$write_header())
+&#96;&#96;&#96;
+</pre>
+
+
+and have the following minimal footer:
+
+<pre>
+&#96;r I(page$write_footer())&#96;
+</pre>
+
+Pages are prettier with navigation, but that is not required.
+
+
+
+`r I(nav$add("Question types"))`
+
+There are several types of questions available:
+
+<h3> Radio buttons </h3>
+
+The `radio_choice` style allows a choice of one item from a list of
+values. The basic markup would look like:
+
+
+Pick a state:
+<pre>
+&#96;r I(page$radio_choice(state.name[1:4], "Alaska"))&#96;
+&#96;r I(page$radio_choice(state.name[1:4], "Alaska"))&#96;
+</pre>
+
+which gives:
+`r I(page$new_problem())`
+`r I(page$radio_choice(state.name[1:4], "Alaska"))`
+
+That's a little minimal. One can add a new problem indicator, a hint and comments on incorrect answers. For example:
+
+<pre>
+&#96;r I(page$new_problem())&#96;
+Pick a really large state:
+&#96;&#96;&#96;{r echo=FALSE, results="asis"}
+cat(page$radio_choice(state.name[1:4], "Alaska", 
+  hint="North to ...", 
+  comment=list("Alabama"="Nope, that's Sweet home Alabama", 
+               "Arizona"="Nope, the Grand Canyon State", 
+               "Arkansas"="Nope that's the Natural State"), 
+               linebreak=TRUE))
+&#96;&#96;&#96;
+</pre>
+
+This yields
+
+`r I(page$new_problem())`
+Pick a really large state:
+```{r echo=FALSE, results="asis"}
+cat(page$radio_choice(state.name[1:4], "Alaska", 
+  hint="North to the future...", 
+  comment=list("Alabama"="Nope, that's Sweet home Alabama", 
+               "Arizona"="Nope, the Grand Canyon State", 
+               "Arkansas"="Nope, that's the Natural State"), 
+               linebreak=TRUE))
+```
+
+The above example shows many things:
+
+- the `new_problem` call will create a badge which records the number of tries and has a space for comments to be displayed. This is the default behaviour, but can be modified by calling with `add_badge=FALSE`. This default to the value of `instant_feedback` given to the `page` constructor.
+
+- The `hint` argument allows one to give the students hints that popup on mouse overs
+
+- The `comment` argument takes a named list where the names come from the incorrect answers and the values specify a comment.
+
+- The problems are marked up inline wrapped with `I()` or in a block
+  wrapped in `cat()`. Maybe this can be removed through some fancy
+  `knitr` options, but it hasn't yet been done.
+
+
+<h3>Checkbox groups</h3>
+
+A checkgroup allows the student to select one _or more_ from a set of values. The basic markup looks like:
+
+<pre>
+&#96;r I(page$checkgroup_choice(state.name[1:4], c("Alabama", "Alaska")))&#96;
+</pre>
+
+
+yielding:
+
+`r I(page$checkgroup_choice(state.name[1:4], c("Alabama", "Alaska")))`
+
+Comments are specified using values combined with "::". So for example
+
+```r
+comments <- list("Alabama::Arkansas"="Nope not right",
+	         "Alabama"="Nope, one more")
+```
+The other combinations will get the default:
+
+```{r echo=FALSE, results="asis"}
+cat(page$new_problem())
+cat(I(page$checkgroup_choice(state.name[1:4], c("Alabama", "Alaska"),
+           comment=list("Alabama::Arkansas"="Nope not right",
+	                 "Alabama"="Nope, one more"))))
+```
+
+<h3>Typeahead choice</h3>
+
+A typeahead choice forces the user to type in their answers, but allows them to narrow the list of potential answers. It is useful when there can be many.
+
+For example, to select one of the 50 states:
+
+<pre>
+&#96;r I(page$typeahead_choice(state.name, "Alaska", hint="North to the future"))&#96;
+</pre>
+
+
+`r I(page$new_problem())`
+Enter a state:
+
+```{r echo=FALSE, results="asis"}
+cat(page$typeahead_choice(state.name, "Alaska", hint="North to the future"))
+```
+
+
+<h3>Combobox or select choice</h3>
+The `combobox_choice` gives the student a combobox to choose an item from. It is very similar to a radio choice, but manages screen space differently.
+
+
+<pre>
+&#96;r I(page$new_problem())&#96;
+Pick a really large state:
+&#96;&#96;&#96;{r echo=FALSE, results="asis"}
+cat(page$combobox_choice(state.name[1:4], "Alaska", 
+  hint="North to the future...", 
+  comment=list("Alabama"="Nope, that's Sweet home Alabama", 
+               "Arizona"="Nope, the Grand Canyon State", 
+               "Arkansas"="Nope, that's the Natural State")))
+&#96;&#96;&#96;
+</pre>
+
+
+`r I(page$new_problem())`
+Pick a really large state:
+```{r echo=FALSE, results="asis"}
+cat(page$combobox_choice(state.name[1:4], "Alaska", 
+  hint="North to the future...", 
+  comment=list("Alabama"="Nope, that's Sweet home Alabama", 
+               "Arizona"="Nope, the Grand Canyon State", 
+               "Arkansas"="Nope, that's the Natural State")
+          ))
+```
+
+
+<h3>Numeric choices</h3>
+A numeric choice allows the student to enter a number. To work around rounding issues, the problem can be set with a min and maximum allowable value. The comment list has names `less` and `more`. Here is a way to get $\pi$:
+
+
+<pre>
+&#96;r I(page$new_problem())&#96;
+What is $\pi$?
+&#96;&#96;&#96;{r echo=FALSE, results="asis"}
+cat(page$numeric_choice(3.1, 3.2, 
+  comment=list(more="Too much", less="Too little")))
+&#96;&#96;&#96;
+</pre>
+
+
+`r I(page$new_problem())`
+What is $\pi$?
+```{r echo=FALSE, results="asis"}
+cat(page$numeric_choice(3.10001, 3.199999, 
+  comment=list(more="Too much", less="Too little")))
+```
+
+<h3>Free response</h3>
+
+The `free_choice` option allows a student to enter in any text into a text box. The only option is a hint. These problems are not graded automatically, rather by the teacher of a section. While grading the text can be run through R-markdown.
+
+
+<pre>
+&#96;&#96;&#96;{r echo=FALSE, results="asis"}
+cat(page$new_problem())
+cat(page$write("Well, how do you feel?"))
+cat(page$free_choice("Go ahead, enter whatever you want..."))
+&#96;&#96;&#96;
+</pre>
+
+
+```{r echo=FALSE, results="asis"}
+cat(page$new_problem())
+cat(page$write("Well, how do you feel?"))
+cat(page$free_choice("Go ahead, enter whatever you want..."))
+```
+
+
+`r I(nav$add("Randomization"))`
+
+Problems can be radomized. Each student has their own random seed, and
+each project is generated with that seed. So different students will
+(likely) get different projects, but the same student should always
+get the same one. With this, problems can be randomized. For example, this problem asks a student to estimate the mean from a histogram within 1 standard deviation:
+
+<pre>
+&#96;&#96;&#96;{r echo=FALSE, results="asis"}
+mu <- sample(1:10, 1); sigma=sample(1:3, 1)
+x <- rnorm(100, mu, sigma)
+cat(page$new_problem())
+hist(x)
+cat(page$write("Guess the mean from the histogram"))
+cat(page$numeric_choice(mu-sigma/2, mu + sigma/2))
+&#96;&#96;&#96;
+</pre>
+
+```{r echo=FALSE, results="asis"}
+mu <- sample(1:10, 1); sigma=sample(1:3, 1)
+x <- rnorm(100, mu, sigma)
+cat(page$new_problem())
+hist(x)
+cat(page$write("Guess the mean from the histogram"))
+cat(page$numeric_choice(mu-sigma/2, mu + sigma/2))
+```
+
+
+
+`r I(nav$add("Navigation"))`
+
+The basic page has no navigation features. Adding them is easy. We create an `nav` object in the header with:
+
+<pre>
+&#96;&#96;&#96; {r echo=FALSE, results="asis"}
+## Nothing to see here ... move along
+require("questionr", quietly=TRUE)
+page <- questionr:::Page$new()
+nav <- questionr:::NavBar$new()
+cat(page$write_header())
+&#96;&#96;&#96;
+</pre>
+
+Then when we want to add navigation (which consists of an item in the menu bar and a heading in the file, we use the `add` method:
+
+<pre>
+&#96;r I(nav$add("Some navigation"))&#96;
+</pre>
+
+To finish navigation we call the `write_footer` method. This is usually just part of the footer along with a call to the `write_footer` method of the page object.
+
+`r I(nav$add("Tabs"))`
+
+One can add a notebook with tabs to compress the necessary vertical space. This is useful for grouping related items together in a question, such as diagnostic graphics. The tab container is made with the `Tabs` reference class and new pages added with the `add` method. All tabs are wrapped in a `write_header` and `write_footer`. For example, this code:
+
+<pre>
+&#96;&#96;&#96;{r echo=FALSE, results="asis"}
+tabs <- questionr:::Tabs$new()
+cat(tabs$write_header())
+
+x <- rnorm(100)
+&#96;&#96;&#96;
+
+&#96;r I(tabs$add("Summary"))&#96;
+&#96;&#96;&#96;{r}
+summary(x)
+&#96;&#96;&#96;
+&#96;r I(tabs$add("boxplot"))&#96;
+&#96;&#96;&#96;{r}
+boxplot(x)
+&#96;&#96;&#96;
+
+&#96;r I(tabs$write_footer())&#96;
+
+</pre>
+
+makes these tabs:
+
+```{r echo=FALSE, results="asis"}
+tabs <- questionr:::Tabs$new()
+cat(tabs$write_header())
+
+x <- rnorm(100)
+```
+
+`r I(tabs$add("Summary"))`
+```{r}
+summary(x)
+```
+`r I(tabs$add("boxplot"))`
+```{r}
+boxplot(x)
+```
+
+`r I(tabs$write_footer())`
+
+
+
+
+
+`r I(nav$add("Deploying"))`
+
+Once knit, pages are standalone, self grading web pages. The grading can happen instantly and the badges and comments give the necessary feedback. This is the default behaviour. For such pages, the HTML is self contained and can be hosted anywhere. For exampe Rpubs.
+
+Pages can also be shown within the system provided by this package. For such use, one should add buttons near the bottom. The call for this is:
+
+<pre>
+&#96;r I(page$grade_button())&#96;
+</pre>
+
+To deploy these pages, a teacher must upload them into a class or section as projects.
+
+
+
+
+
+
+<!--- Finish this off -->
+
+`r I(nav$write_footer())`
+
+
+
+`r I(page$write_footer())`

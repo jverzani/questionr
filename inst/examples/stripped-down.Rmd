@@ -1,0 +1,21 @@
+``` {r echo=FALSE, results="asis"}
+## Nothing to see here ... move along
+require("questionr", quietly=TRUE)
+page <- questionr:::Page$new()
+nav <- questionr:::NavBar$new()
+cat(page$write_header())
+```
+<!--- Start here, we leave some optional bits for navigation-->
+
+`r I(nav$write_header("Header", "Sub head"))`
+`r I(nav$add("Replace me"))`
+
+Go from here ...
+
+
+<!--- Finish this off -->
+```{r echo=FALSE, results="asis"}
+cat(nav$write_footer())
+cat(page$grade_button())
+cat(page$write_footer())
+```

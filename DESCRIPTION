@@ -1,0 +1,52 @@
+Package: questionr
+Type: Package
+Title: A package to write quizzes, ... using R markdown
+Version: 1.0
+Date: 2012-06-18
+Author: Who wrote it
+Depends:
+    methods,
+    whisker,
+    markdown,
+    stringr,
+    lubridate,
+    digest,
+    tools,
+    httr,
+    RJSONIO
+Maintainer: Who to complain to <yourfault@somewhere.net>
+Description: More about what it does (maybe more than one line)
+License: What license is it under?
+Collate:
+    'fields.R'
+    'tables.R'
+    'zzz.R'
+    'classes.R'
+    'page.R'
+    'functions.R'
+    'markup.R'
+    'json.R'
+    'auth.R'
+    'utils.R'
+    'forms.R'
+    'projects.R'
+    'class.R'
+    'sections.R'
+    'students.R'
+    'teachers.R'
+    'answers.R'
+    'messages.R'
+    'pkg.R'
+    'rpc.R'
+    'teacher_request.R'
+    'login.R'
+    'student_do_project.R'
+    'student_enroll_section.R'
+    'student_entry.R'
+    'teacher_add_students.R'
+    'teacher_edit_preferences.R'
+    'teacher_edit_sections.R'
+    'teacher_entry.R'
+    'teacher_grade_project.R'
+    'teacher_leave_message.R'
+    'teacher_edit_classes.R'

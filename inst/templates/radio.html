@@ -1,0 +1,16 @@
+{{! radio button. See radio constructor }}
+
+<div class="control-group">
+  {{#label}}
+  <label class="control-label" for="input01">{{{label}}}</label>
+  {{/label}}
+  <div id="{{id}}" class="controls">
+  {{#radio}}
+  <input type="radio" name="{{name}}" {{{selected}}} value="{{value}}">{{{label}}}{{{vertical}}}
+    
+  {{/radio}}
+  {{#help}}  
+  <p class="help-block">{{{help}}}</p>  
+  {{/help}}
+  </div>  
+</div>  

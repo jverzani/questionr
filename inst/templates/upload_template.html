@@ -1,0 +1,50 @@
+<form class="form-horizontal fileupload"
+ action="{{{base_url}}}/test"
+ data-projectid="SOMEID"
+ data-classid="USERID"
+ method="POST"
+ enctype="multipart/form-data"
+  >
+<span class="btn btn-success fileinput-button">
+<i class="icon-plus icon-white"></i>
+<span>Replace file...</span>
+<input type="file" name="files[]" multiple> 
+</span>
+</form>
+
+
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
+
+<!-- The jQuery UI widget factory, can be omitted if jQuery UI is already included -->
+<script src="{{{static_url}}}/blueimp/js/vendor/jquery.ui.widget.js"></script>
+
+<!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
+<script src="{{{static_url}}}/blueimp/js/jquery.iframe-transport.js"></script>
+<!-- The basic File Upload plugin -->
+<script src="{{{static_url}}}/blueimp/js/jquery.fileupload.js"></script>
+<!-- The XDomainRequest Transport is included for cross-domain file deletion for IE8+ -->
+<!--[if gte IE 8]><script src="{{{static_url}}}/blueimp/js/cors/jquery.xdr-transport.js"></script><![endif]-->
+
+
+<script>
+$(document).ready(function() {
+// This is called when the upload button is submitted
+//$('.fileupload').fileupload({})
+$('.fileupload').fileupload({
+        dataType: 'json',
+        add: function (e, data) {
+
+        data.formData = {project_id:$(this).attr("data-projectid"),
+                         class_id:$(this).attr("data-classid")};
+            data.context = $('<p/>').text('Uploading...').appendTo(document.body);
+            data.submit();
+        },
+        done: function (e, data) {
+            data.context.text('Upload finished.')
+        }
+    });
+})
+
+
+</script>    

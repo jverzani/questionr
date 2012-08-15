@@ -1,0 +1,90 @@
+{{#title}}
+<div class="page-header">
+<h2>{{{title}}}</h2>
+{{#small_title}}
+  <small>{{{small_title}}}</small>
+{{/small_title}}  
+</div>
+{{/title}}
+
+{{{instructs}}}
+
+<form class="form-horizontal{{#well}} well{{/well}}"
+  {{#form_id}}id="{{form_id}}"{{/form_id}}
+  {{#form_action}}action="{{{form_action}}}{{/form_action}}"
+>
+  <fieldset>
+{{#elements}}
+    <div class="control-group">
+      <label class="control-label" for="{{id}}">{{{label}}}</label>
+      <div class="controls">
+	{{{control}}}
+	{{#help}}
+	<p class="help-block">{{{help}}}</p>
+	{{/help}}
+      </div>
+    </div>
+    
+{{/elements}}    
+  </fieldset>
+</form>
+{{#submit_action}}
+<script>
+$("#{{form_id}}").submit(
+    {{{submit_action}}}
+    );
+</script>
+{{/submit_action}}    
+    
+
+
+<script src="{{{bootstrap_base_url}}}/assets/js/bootstrap-typeahead.js"></script>
+<script src="{{{static_url}}}/jquery-cookie/jquery.cookie.js"></script>
+
+{{#set_value}}
+<script>    
+$(document).ready(function() {
+    var ID = "{{ID}}";
+    {{^handler}}
+    var set_value=function(key, value) {
+      call_rpc("{{OBJ}}", "set", {id:ID, x:value});
+     };
+    {{/handler}}
+    {{#handler}}
+    {{{handler}}}
+    {{/handler}}
+              
+$("{{{parent_selector}}}[type=\'checkbox\']").each(function() {
+    this.onchange = function() {
+        set_value(this.id, this.checked);
+    }
+});
+
+$("{{{parent_selector}}}[type=\'radio\']").each(function() {
+    this.onchange = function() {
+        set_value(this.name, this.value);
+    }
+});
+
+$("{{{parent_selector}}}[type=\'text\']").each(function() {
+    this.onchange = function() {
+        set_value(this.id, this.value);
+    }
+});
+
+$("{{{parent_selector}}}[type=\'date\']").each(function() {
+    this.onchange = function() {
+        set_value(this.id, this.value);
+    }
+});
+
+$("{{{parent_selector}}}select").each(function() {
+    this.onchange = function() {
+        set_value(this.id, this.value);
+    }
+});
+
+    
+});
+</script>
+{{/set_value}}

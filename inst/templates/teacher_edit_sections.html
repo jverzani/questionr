@@ -1,0 +1,240 @@
+<!-- edit sections -->
+
+
+<div class="page-header">
+  <h2>Edit sections</h2>
+</div>
+
+<div id="instructions"></div>
+
+
+<ul class="nav nav-tabs" id="myTab">
+  {{#sections}}
+    <li{{#active}} class="active"{{/active}}><a href="#{{{section_id}}}_tab">{{{label}}}</a></li>
+  {{/sections}}
+    <li{{#new_section_active}} class="active"{{/new_section_active}}><a href="#new_section_tab">New section ...</a></li>
+</ul>
+ 
+<div class="tab-content">
+  {{#sections}}
+    <div class="tab-pane{{#active}} active{{/active}}" id="{{section_id}}_tab">
+      <h4>Projects</h4>
+      <table class="table table-condensed table-striped dndtable" id={{section_id}}>
+	<thead>
+	  <tr>
+	    <th></th>
+	    <th>Name</th>
+	    <th>Due date</th>
+	    <th>Actions</th>
+	  </tr>
+	  </thead>
+	<tbody>
+	  {{#rows}}
+	  <tr id="{{project_id}}">
+	    <td><i class="icon-th"></i></td>
+	    {{#cells}}
+	    <td>{{{label}}}</td>
+	    {{/cells}}
+
+	    <td> <!-- actions -->
+	      <a href='{{{base_url}}}/teacher_view_project?project_id={{project_id}}' target='_blank' >
+	      <i class='icon-file'></i> view</a>
+	      &nbsp;
+	      
+	      <a href='{{{base_url}}}/teacher_edit_project?project_id={{project_id}}' target='_blank'><i class='icon-edit'></i> edit</a>
+	      &nbsp;
+
+	      	      
+	      <a href='#' onclick='delete_project("{{section_id}}", "{{project_id}}");true'><i class='icon-trash'></i> delete</a>
+
+	      &nbsp;
+	      
+	      <form class="form-horizontal fileupload"
+	      action="{{{base_url}}}/rpc"
+	        data-projectid="{{{project_id}}}"
+	        data-sectionid="{{{section_id}}}"
+	        method="POST"
+	        enctype="multipart/form-data"
+	        >
+	      <span class="btn btn-success fileinput-button">
+	      <i class="icon-refresh icon-white"></i>
+	      <span>Replace file...</span>
+	      <input type="file" name="files[]"> 
+	      </span>
+	      </form>
+	      
+	      
+	    </td>
+	    
+	  </tr>
+	  {{/rows}}
+	</tbody>
+      </table>
+      
+      <div class="btn-group">
+      <form class="form-horizontal fileupload"
+	      action="{{{base_url}}}/rpc"
+	        data-sectionid="{{{section_id}}}"
+	        method="POST"
+	        enctype="multipart/form-data"
+	        >
+	      <span class="btn btn-success fileinput-button">
+	      <i class="icon-plus icon-white"></i>
+	      <span>Add new project...</span>
+	      <input type="file" name="files[]"> 
+	      </span>
+      </form>
+      </div>
+      <hr />
+
+      <h4>Edit section properties</h4>
+<div class="well form-horizontal">
+  <fieldset>
+
+    <div class="control-group">
+      <label class="control-label" for="">Name</label>
+      <div class="controls">
+      <input type="text" value="{{{label}}}" onchange="set_section_prop('name', '{{section_id}}', $(this).val())"/>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <label class="control-label" for="}">Semester</label>
+      <div class="controls">
+      <input type="text" value="{{{semester}}}" onchange="set_section_prop('semester', '{{section_id}}', $(this).val())"/>	      </div>
+    </div>
+
+    
+    <div class="control-group">
+      <label class="control-label" for="}">Year</label>
+      <div class="controls">
+      <input type="text" value="{{{year}}}" onchange="set_section_prop('year', '{{section_id}}', $(this).val())"/>	      </div>
+    </div>
+
+    <div class="control-group">
+      <label class="control-label" for="}">Public</label>
+      <div class="controls">
+	<input type="checkbox" {{#public}}checked{{/public}}/>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <label class="control-label" for="}">Close</label>
+      <div class="controls">
+	<button class="btn  btn-warning" onclick="if(confirm('Really? This can\'t be reversed.')) close_section('{{section_id}}')">
+	<i class="icon-remove icon-white"></i> Close section...
+	</button>
+      </div>
+    </div>
+
+    
+  </fieldset>
+</div>
+     <hr />
+
+      <h4>To invite students:</h4>
+<p>
+  Students should enroll with this section id: <strong>{{section_id}}</strong>
+</p>
+      
+      </div>
+    {{/sections}}
+   <div class="tab-pane{{#new_section_active}} active{{/new_section_active}}" id="new_section_tab">
+     {{{NEW_SECTION_FORM}}}
+   <div>  
+</div>
+
+
+	    
+    
+<script src="{{{bootstrap_base_url}}}/assets/js/bootstrap-tab.js"></script>
+<script src="{{{bootstrap_base_url}}}/assets/js/bootstrap-alert.js"></script>
+
+<script src="{{{static_url}}}/blueimp/js/vendor/jquery.ui.widget.js"></script>
+<script src="http://blueimp.github.com/JavaScript-Templates/tmpl.min.js"></script>
+<script src="{{{static_url}}}/blueimp/js/jquery.iframe-transport.js"></script>
+<script src="{{{static_url}}}/blueimp/js/jquery.fileupload.js"></script>
+<!--[if gte IE 8]><script src="{{{static_url}}}/blueimp/js/cors/jquery.xdr-transport.js"></script><![endif]-->
+
+
+<!-- Drag and Drop table rows to reorder projects. We don't use due -->
+<!-- date -->
+
+<script src="{{{static_url}}}/tablednd/jquery.tablednd.js"></script>
+<script>
+$(document).ready(function() {
+$(".dndtable").tableDnD({
+  onDragClass:"dragging",
+  onDrop: function(table, row) {
+    var section_id = table.id;
+    var new_order = [];
+    var rows = table.tBodies[0].rows;
+    $(rows).each(function() {new_order.push(this.id)});
+    var params = { section_id:section_id, new_order:new_order};
+    call_rpc("section", "rearrange_project_order", params);
+  }
+});
+})
+</script>
+
+
+
+<script>
+var set_section_prop = function(prop, section_id, value) {
+    var params = {section_id:section_id, value:value};
+    call_rpc("section", "set_" + prop, params);
+}
+var close_section = function(section_id) {
+    var params = {section_id:section_id}
+    var success = function(data) {window.location.replace("{{base_url}}/teacher_edit_sections")}
+    call_rpc("section", "close_section", params, success);
+}
+</script>      
+      
+<script>
+var delete_project = function(section_id, project) {
+  var resp = confirm('Really delete this resource');
+  if(resp == true) {
+    var params = {section_id:section_id, project_id:project};
+    var success = function(data) {window.location.replace("{{base_url}}/teacher_edit_sections?section_id=" + section_id)};
+
+    call_rpc("section", "delete_project", params, success)
+  }
+};
+</script>
+    
+<script>
+$(document).ready(function () {
+  $('#myTab a').click(function (e) {
+    e.preventDefault();
+    $(this).tab('show');
+  });
+})
+</script>
+<script>
+$(document).ready(function() {
+$('.fileupload').fileupload({
+        dataType: 'json',
+        add: function (e, data) {
+
+        data.formData = {obj:"section", method:"upload_project", id:'1',
+                         project_id:$(this).attr("data-projectid"),
+                         params:JSON.stringify({
+                           section_id:$(this).attr("data-sectionid"),
+                           project_id:$(this).attr("data-projectid")
+                           })
+                         }
+//data.context = $('<p/>').text('Uploading...').appendTo(document.body);
+            data.submit();
+        },
+        done: function (e, data) {
+          if(typeof(data.projectid) == "undefined") {
+            window.location.replace("{{base_url}}/teacher_edit_sections?section_id=" + data.sectionid);
+          };
+        },
+        error: function(e, data) {
+          alert("error with the upload");
+        }
+    });
+})
+</script>
